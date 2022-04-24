@@ -1,0 +1,971 @@
+import 'package:flutter/material.dart';
+import 'package:kantin/theme.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    Widget customBottomNav() {
+      return BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/icon_home.png"),
+            ),
+            label: 'Beranda',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/icon_chat.png"),
+            ),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/icon_order.png"),
+            ),
+            label: 'Order List',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/icon_user.png"),
+            ),
+            label: 'Akun',
+          ),
+        ],
+        currentIndex: 0,
+        selectedItemColor: redColor,
+        unselectedItemColor: greyColor,
+        showUnselectedLabels: true,
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: whiteColor,
+      bottomNavigationBar: customBottomNav(),
+      body: const Center(
+        child: Text('Main Page'),
+      ),
+    );
+  }
+}
+
+
+Container(
+            height: 60,
+            width: MediaQuery.of(context).size.width / 4,
+            decoration: BoxDecoration(
+              color: Colors.green,
+            ),
+            child: Column(
+              children: [
+                Padding(padding: EdgeInsets.only(top: 9)),
+                Icon(Icons.home_outlined),
+                Text('Home'),
+              ],
+            ),
+          ),
+          Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width / 4,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                children: [
+                  Padding(padding: EdgeInsets.only(top: 9)),
+                  Icon(Icons.textsms_outlined),
+                  Text('Message'),
+                ],
+              )),
+          Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width / 4,
+              decoration: BoxDecoration(
+                color: Colors.red,
+              ),
+              child: Column(
+                children: [
+                  Padding(padding: EdgeInsets.only(top: 9)),
+                  Icon(Icons.format_list_bulleted_outlined),
+                  Text('Order List'),
+                ],
+              )),
+          Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width / 4,
+              decoration: BoxDecoration(
+                color: Colors.red,
+              ),
+              child: Column(
+                children: [
+                  Padding(padding: EdgeInsets.only(top: 9)),
+                  Icon(Icons.person_outlined),
+                  Text('Akun'),
+                ],
+              )),
+
+              import 'package:antdesign_icons/antdesign_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:kantin/theme.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    Container buildNavBarItem(IconData icon, text) {
+      return Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width / 4,
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          children: [
+            Padding(padding: EdgeInsets.only(top: 9)),
+            Icon(icon),
+            Text(text),
+            // Text(text),
+          ],
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: whiteColor,
+      bottomNavigationBar: Row(
+        children: <Widget>[
+          buildNavBarItem(
+            Icons.home_outlined,
+            'Home',
+          ),
+          buildNavBarItem(
+            Icons.textsms_outlined,
+            'Chat',
+          ),
+          buildNavBarItem(
+            Icons.format_list_bulleted_outlined,
+            'Order',
+          ),
+          buildNavBarItem(
+            Icons.person_outlined,
+            'Akun',
+          ),
+        ],
+      ),
+      body: const Center(
+        child: Text('Main Page'),
+      ),
+    );
+  }
+}
+
+import 'package:flutter/material.dart';
+import 'package:kantin/pages/home/akun_page.dart';
+import 'package:kantin/pages/home/chat_page.dart';
+import 'package:kantin/pages/home/home_page.dart';
+import 'package:kantin/pages/home/order_list_page.dart';
+import 'package:kantin/theme.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  int currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget customNavBar() {
+      return BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: currentIndex,
+        onTap: (value) {
+          // print(value);
+          setState(() {
+            currentIndex = value;
+          });
+        },
+        backgroundColor: redColor,
+        selectedItemColor: blackColor,
+        unselectedItemColor: greyColor,
+        items: [
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage(
+                'assets/icon_home.png',
+              ),
+              size: 24,
+              color: currentIndex == 0 ? blackColor : greyColor,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage('assets/icon_chat.png'),
+              size: 24,
+              color: currentIndex == 1 ? blackColor : greyColor,
+            ),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage('assets/icon_order.png'),
+              size: 24,
+              color: currentIndex == 2 ? blackColor : greyColor,
+            ),
+            label: 'Order',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage('assets/icon_user.png'),
+              size: 24,
+              color: currentIndex == 3 ? blackColor : greyColor,
+            ),
+            label: 'Akun',
+          ),
+        ],
+      );
+    }
+
+    Widget body() {
+      switch (currentIndex) {
+        case 0:
+          return HomePage();
+          break;
+        case 1:
+          return ChatPage();
+          break;
+        case 2:
+          return OrderListPage();
+          break;
+        case 3:
+          return AkunPage();
+          break;
+
+        default:
+          return HomePage();
+      }
+    }
+
+    return Scaffold(
+      backgroundColor: whiteColor,
+      bottomNavigationBar: customNavBar(),
+      body: body(),
+    );
+  }
+}
+
+
+import 'package:flutter/material.dart';
+import 'package:kantin/pages/home/akun_page.dart';
+import 'package:kantin/pages/home/chat_page.dart';
+import 'package:kantin/pages/home/home_page.dart';
+import 'package:kantin/pages/home/order_list_page.dart';
+import 'package:kantin/theme.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  int currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    // Widget customNavBar() {
+    //   return BottomNavigationBar(
+    //     type: BottomNavigationBarType.fixed,
+    //     currentIndex: currentIndex,
+    //     onTap: (value) {
+    //       // print(value);
+    //       setState(() {
+    //         currentIndex = value;
+    //       });
+    //     },
+    //     backgroundColor: redColor,
+    //     selectedItemColor: blackColor,
+    //     unselectedItemColor: greyColor,
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage(
+    //             'assets/icon_home.png',
+    //           ),
+    //           size: 24,
+    //           color: currentIndex == 0 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Home',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage('assets/icon_chat.png'),
+    //           size: 24,
+    //           color: currentIndex == 1 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Chat',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage('assets/icon_order.png'),
+    //           size: 24,
+    //           color: currentIndex == 2 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Order',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage('assets/icon_user.png'),
+    //           size: 24,
+    //           color: currentIndex == 3 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Akun',
+    //       ),
+    //     ],
+    //   );
+    // }
+
+    Widget body() {
+      switch (currentIndex) {
+        case 0:
+          return HomePage();
+          break;
+        case 1:
+          return ChatPage();
+          break;
+        case 2:
+          return OrderListPage();
+          break;
+        case 3:
+          return AkunPage();
+          break;
+
+        default:
+          return HomePage();
+      }
+    }
+
+    Widget buildNavBarItem(IconData icon, text, int index) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        child: Container(
+          height: 60,
+          width: MediaQuery.of(context).size.width / 4,
+          decoration: BoxDecoration(
+            color: whiteColor,
+          ),
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.only(top: 9)),
+              Icon(icon, color: index == currentIndex ? blackColor : greyColor),
+              Text(text,
+                  style: TextStyle(
+                      color: index == currentIndex ? blackColor : greyColor)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: whiteColor,
+      bottomNavigationBar: Row(children: [
+        buildNavBarItem(Icons.home, 'Home', 0),
+        buildNavBarItem(Icons.textsms_outlined, 'Chat', 1),
+        buildNavBarItem(Icons.format_list_bulleted_outlined, 'Order List', 2),
+        buildNavBarItem(Icons.person_outlined, 'Akun', 3),
+      ]),
+      body: body(),
+    );
+  }
+}
+
+Expanded(
+            child: Container(
+              width: 164,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: lightGrayColor),
+                color: whiteColor,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Image.asset(
+                    'assets/mie_ayam.png',
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Mie Ayam',
+                          style: blackTextStyle.copyWith(
+                              fontSize: 14, fontWeight: bold),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Rp15.000',
+                              style: priceTextStyle.copyWith(
+                                  fontSize: 14, fontWeight: regular),
+                            ),
+                            Container(
+                              height: 26,
+                              child: ElevatedButton(
+                                child: Text(
+                                  'Add',
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 12,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0.0,
+                                  primary: blueColor,
+                                  shadowColor: Colors.transparent,
+                                  // minimumSize: Size(210, 50),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(6)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+
+Container(
+            width: 164,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: lightGrayColor),
+              color: whiteColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Image.asset(
+                  'assets/mie_ayam.png',
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 10,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Mie Ayam',
+                        style: blackTextStyle.copyWith(
+                            fontSize: 14, fontWeight: bold),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Rp15.000',
+                            style: priceTextStyle.copyWith(
+                                fontSize: 14, fontWeight: regular),
+                          ),
+                          Container(
+                            height: 26,
+                            child: ElevatedButton(
+                              child: Text(
+                                'Add',
+                                style: blackTextStyle.copyWith(
+                                  fontSize: 12,
+                                  color: whiteColor,
+                                ),
+                              ),
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                primary: blueColor,
+                                shadowColor: Colors.transparent,
+                                // minimumSize: Size(210, 50),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(6)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+
+          import 'package:flutter/material.dart';
+import 'package:kantin/pages/home/akun_page.dart';
+import 'package:kantin/pages/home/chat_page.dart';
+import 'package:kantin/pages/home/home_page.dart';
+import 'package:kantin/pages/home/order_list_page.dart';
+import 'package:kantin/theme.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  int currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    // Widget customNavBar() {
+    //   return BottomNavigationBar(
+    //     type: BottomNavigationBarType.fixed,
+    //     currentIndex: currentIndex,
+    //     onTap: (value) {
+    //       // print(value);
+    //       setState(() {
+    //         currentIndex = value;
+    //       });
+    //     },
+    //     backgroundColor: redColor,
+    //     selectedItemColor: blackColor,
+    //     unselectedItemColor: greyColor,
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage(
+    //             'assets/icon_home.png',
+    //           ),
+    //           size: 24,
+    //           color: currentIndex == 0 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Home',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage('assets/icon_chat.png'),
+    //           size: 24,
+    //           color: currentIndex == 1 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Chat',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage('assets/icon_order.png'),
+    //           size: 24,
+    //           color: currentIndex == 2 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Order',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: ImageIcon(
+    //           AssetImage('assets/icon_user.png'),
+    //           size: 24,
+    //           color: currentIndex == 3 ? blackColor : greyColor,
+    //         ),
+    //         label: 'Akun',
+    //       ),
+    //     ],
+    //   );
+    // }
+
+    Widget body() {
+      switch (currentIndex) {
+        case 0:
+          return HomePage();
+          break;
+        case 1:
+          return ChatPage();
+          break;
+        case 2:
+          return OrderListPage();
+          break;
+        case 3:
+          return AkunPage();
+          break;
+
+        default:
+          return HomePage();
+      }
+    }
+
+    Widget buildNavBarItem(IconData icon, text, int index) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        child: Container(
+          height: 60,
+          width: MediaQuery.of(context).size.width / 4,
+          decoration: BoxDecoration(
+            color: whiteColor,
+          ),
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.only(top: 9)),
+              Icon(icon, color: index == currentIndex ? blackColor : greyColor),
+              Text(text,
+                  style: TextStyle(
+                      color: index == currentIndex ? blackColor : greyColor)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: whiteColor,
+      bottomNavigationBar: Row(children: [
+        buildNavBarItem(Icons.home, 'Home', 0),
+        buildNavBarItem(Icons.textsms, 'Chat', 1),
+        buildNavBarItem(Icons.format_list_bulleted, 'Order List', 2),
+        buildNavBarItem(Icons.person, 'Akun', 3),
+      ]),
+      body: body(),
+    );
+  }
+}
+
+Scaffold(
+      backgroundColor: whiteColor,
+      appBar: AppBar(
+          // The search area here
+          backgroundColor: whiteColor,
+          elevation: 0.5,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: blackColor,
+              size: 30,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Container(
+            width: double.infinity,
+            height: 44,
+            decoration: BoxDecoration(
+                color: lightGrayColor, borderRadius: BorderRadius.circular(12)),
+            child: Center(
+              child: TextField(
+                showCursor: true,
+                readOnly: false,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: greyColor,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.clear,
+                      color: greyColor,
+                    ),
+                    onPressed: () {
+                      /* Clear the search field */
+                    },
+                  ),
+                  hintText: 'Cari...',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          )),
+    );
+
+    Widget header() {
+      return AppBar(
+        // The search area here
+        backgroundColor: whiteColor,
+        elevation: 0.5,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: blackColor,
+            size: 30,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Container(
+          width: double.infinity,
+          height: 44,
+          decoration: BoxDecoration(
+              color: lightGrayColor, borderRadius: BorderRadius.circular(12)),
+          child: Center(
+            child: TextField(
+              showCursor: true,
+              readOnly: false,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: greyColor,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.clear,
+                    color: greyColor,
+                  ),
+                  onPressed: () {
+                    /* Clear the search field */
+                  },
+                ),
+                hintText: 'Cari...',
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Container(
+                      height: 30,
+                      child: ElevatedButton(
+                        child: Text(
+                          'Add',
+                          style: blackTextStyle.copyWith(
+                            fontSize: 12,
+                            color: whiteColor,
+                          ),
+                        ),
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0.0,
+                          primary: blueColor,
+                          shadowColor: Colors.transparent,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    import 'package:flutter/material.dart';
+import 'package:kantin/theme.dart';
+
+class ProdukSearchCard extends StatelessWidget {
+  const ProdukSearchCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+        left: defaultMargin,
+        right: defaultMargin,
+        bottom: defaultMargin,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 9,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: lightGrayColor),
+        color: whiteColor,
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              'assets/nasi_goreng1.png',
+              width: 80,
+            ),
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          Container(
+            width: 238,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nasi Goreng Kambing',
+                      style: blackTextStyle.copyWith(
+                        fontSize: 14,
+                        fontWeight: bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      'Rp. 15.000',
+                      style: priceTextStyle.copyWith(
+                        fontSize: 14,
+                        fontWeight: regular,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 30,
+                  child: ElevatedButton(
+                    child: Text(
+                      'Add',
+                      style: blackTextStyle.copyWith(
+                        fontSize: 12,
+                        color: whiteColor,
+                      ),
+                    ),
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      primary: blueColor,
+                      shadowColor: Colors.transparent,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 6,
+                        horizontal: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+import 'package:flutter/material.dart';
+import 'package:kantin/theme.dart';
+
+class ProdukCard extends StatelessWidget {
+  const ProdukCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 164,
+      // height: 184,
+      // margin: EdgeInsets.only(
+      //   right: defaultMargin,
+      // ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: lightGrayColor),
+        color: whiteColor,
+      ),
+      child: Column(
+        children: [
+          Image.asset(
+            'assets/nasi_goreng.png',
+            fit: BoxFit.cover,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nasi Goreng Kambing',
+                  style:
+                      blackTextStyle.copyWith(fontSize: 14, fontWeight: bold),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Rp15.000',
+                      style: priceTextStyle.copyWith(
+                          fontSize: 14, fontWeight: regular),
+                    ),
+                    Container(
+                      height: 26,
+                      child: ElevatedButton(
+                        child: Text(
+                          'Add',
+                          style: blackTextStyle.copyWith(
+                            fontSize: 12,
+                            color: whiteColor,
+                          ),
+                        ),
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0.0,
+                          primary: blueColor,
+                          shadowColor: Colors.transparent,
+                          // minimumSize: Size(210, 50),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
