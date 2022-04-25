@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:provider/provider.dart';
 
-class GetStartedPage extends StatelessWidget {
+class GetStartedPage extends StatefulWidget {
+  @override
+  State<GetStartedPage> createState() => _GetStartedPageState();
+}
+
+class _GetStartedPageState extends State<GetStartedPage> {
+  void initState() {
+    // TODO: implement initState
+
+    getInit();
+
+    super.initState();
+  }
+
+  getInit() async {
+    await Provider.of<ProductProvider>(context, listen: false).getProducts();
+    // Navigator.pushNamed(context, '/sign-in');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

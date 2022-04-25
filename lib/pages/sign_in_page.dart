@@ -167,8 +167,9 @@ class _SignInPageState extends State<SignInPage> {
           child: Text(
             'Login',
             style: blackTextStyle.copyWith(
-              fontSize: 14,
+              fontSize: 15,
               color: whiteColor,
+              fontWeight: bold,
             ),
           ),
           onPressed: handleSignIn,

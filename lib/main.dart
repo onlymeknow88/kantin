@@ -11,6 +11,7 @@ import 'package:kantin/pages/sign_in_page.dart';
 import 'package:kantin/pages/sign_up_page.dart';
 import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProductProvider(),
         ),
       ],
       child: MaterialApp(

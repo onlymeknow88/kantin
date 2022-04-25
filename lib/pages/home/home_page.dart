@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/pages/cart_page.dart';
 import 'package:kantin/pages/search_page.dart';
+import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:kantin/widgets/produk_card.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
     Widget searchInput() {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -253,53 +256,11 @@ class HomePage extends StatelessWidget {
       return Container(
         margin: EdgeInsets.all(defaultMargin),
         child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(child: ProdukCard()),
-                SizedBox(
-                  width: defaultMargin,
-                ),
-                Expanded(child: ProdukCard()),
-              ],
-            ),
-            SizedBox(
-              height: defaultMargin,
-            ),
-            Row(
-              children: [
-                Expanded(child: ProdukCard()),
-                SizedBox(
-                  width: defaultMargin,
-                ),
-                Expanded(child: ProdukCard()),
-              ],
-            ),
-            SizedBox(
-              height: defaultMargin,
-            ),
-            Row(
-              children: [
-                Expanded(child: ProdukCard()),
-                SizedBox(
-                  width: defaultMargin,
-                ),
-                Expanded(child: ProdukCard()),
-              ],
-            ),
-            SizedBox(
-              height: defaultMargin,
-            ),
-            Row(
-              children: [
-                Expanded(child: ProdukCard()),
-                SizedBox(
-                  width: defaultMargin,
-                ),
-                Expanded(child: ProdukCard()),
-              ],
-            ),
-          ],
+          children: productProvider.products
+              .map(
+                (product) => ProdukCard(product),
+              )
+              .toList(),
         ),
       );
     }
@@ -315,3 +276,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+class ProductCard {}

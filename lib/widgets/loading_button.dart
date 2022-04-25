@@ -5,7 +5,7 @@ class LoadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 44,
       width: double.infinity,
       margin: EdgeInsets.only(top: 30),
       child: TextButton(

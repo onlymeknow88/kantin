@@ -4,7 +4,7 @@ import 'package:kantin/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  String baseUrl = 'https://kantin-backend.herokuapp.com/api';
+  String baseUrl = 'http://103.183.75.223/api';
 
   Future<UserModel> register({
     String name,

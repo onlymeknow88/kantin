@@ -1,97 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/models/product_model.dart';
+// import 'package:kantin/pages/product_page.dart';
 import 'package:kantin/theme.dart';
 
 class ProdukCard extends StatelessWidget {
+  // const ProdukCard({Key key, this.product}) : super(key: key);
+
+  final ProductModel product;
+  ProdukCard(this.product);
+
+  String BaseUrl = 'http://103.183.75.223';
+
+  // final ProductModel product;
+  // ProductCard(this.product);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: lightGrayColor,
-          width: 0.5,
-        ),
+      margin: EdgeInsets.only(
+        left: defaultMargin,
+        right: defaultMargin,
+        bottom: defaultMargin,
       ),
-      child: Column(
+      decoration: BoxDecoration(),
+      child: Row(
         children: [
-          Container(
-            height: 106,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(6),
-                topRight: Radius.circular(6),
-              ),
-              image: DecorationImage(
-                image: AssetImage('assets/nasi_goreng.png'),
-                fit: BoxFit.cover,
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              BaseUrl + product.galleries[0].url,
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
             ),
           ),
           SizedBox(
-            height: 16,
+            width: 12,
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-            ),
-            child: Text(
-              'Nasi Goreng Kambing',
-              style: blackTextStyle.copyWith(
-                fontWeight: bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 14,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-            ),
-            child: Row(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    'Rp15.000',
-                    style: priceTextStyle.copyWith(
-                      fontSize: 14,
-                    ),
+                Text(
+                  product.category.name,
+                  style: blackTextStyle.copyWith(
+                    fontSize: 12,
+                    color: greyColor,
                   ),
                 ),
                 SizedBox(
-                  width: 10,
+                  height: 6,
                 ),
-                Container(
-                  height: 30,
-                  child: ElevatedButton(
-                    child: Text(
-                      'Add',
-                      style: blackTextStyle.copyWith(
-                        fontSize: 12,
-                        color: whiteColor,
-                      ),
-                    ),
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      primary: blueColor,
-                      shadowColor: Colors.transparent,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 10,
-                      ),
-                    ),
+                Text(
+                  product.name,
+                  style: blackTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: semiBold,
+                  ),
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Text(
+                  '\Rp${product.price}',
+                  style: priceTextStyle.copyWith(
+                    fontWeight: medium,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(
-            height: 10,
+          Container(
+            height: 30,
+            child: ElevatedButton(
+              child: Text(
+                'Add',
+                style: blackTextStyle.copyWith(
+                  fontSize: 12,
+                  color: whiteColor,
+                ),
+              ),
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                elevation: 0.0,
+                primary: blueColor,
+                shadowColor: Colors.transparent,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 10,
+                ),
+              ),
+            ),
           ),
         ],
       ),

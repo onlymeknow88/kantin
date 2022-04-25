@@ -43,10 +43,15 @@ class AkunPage extends StatelessWidget {
             child: Row(
               children: [
                 ClipOval(
-                  child: Image.network(
-                    user.profilePhotoUrl,
-                    width: 50,
-                  ),
+                  child: (user.profilePhotoUrl != null)
+                      ? Image.asset(
+                          'assets/default_profile.png',
+                          width: 50,
+                        )
+                      : Image.network(
+                          user.profilePhotoUrl,
+                          width: 50,
+                        ),
                 ),
                 SizedBox(
                   width: 16,
