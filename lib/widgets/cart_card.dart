@@ -1,88 +1,136 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/models/cart_model.dart';
+import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:provider/provider.dart';
 
 class CartCard extends StatelessWidget {
+  final CartModel cart;
+  CartCard(this.cart);
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     return Container(
       margin: EdgeInsets.only(
-        top: defaultMargin,
+        top: 10,
       ),
       padding: EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 18,
       ),
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: lightGrayColor,
-          width: 0.5,
-        ),
-      ),
       child: Column(
         children: [
           Row(
             children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    image: AssetImage('assets/nasi_goreng1.png'),
-                    fit: BoxFit.cover,
-                  ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  'http://103.183.75.223/' + cart.product.galleries[0].url,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
                 ),
               ),
               SizedBox(
-                width: 20,
+                width: 12,
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Nasi Goreng Kambing',
+                      cart.product.category.name,
                       style: blackTextStyle.copyWith(
-                        fontWeight: bold,
-                        fontSize: 16,
+                        fontSize: 12,
+                        color: greyColor,
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 6,
                     ),
                     Text(
-                      'Rp15.000',
-                      style: priceTextStyle,
+                      cart.product.name,
+                      style: blackTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: semiBold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Text(
+                      '\Rp${cart.product.price}',
+                      style: priceTextStyle.copyWith(
+                        fontWeight: medium,
+                      ),
                     ),
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  Image.asset(
-                    'assets/icon_minus.png',
-                    width: 24,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    '0',
-                    style: blackTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
+            ],
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Quantity:',
+                style: blackTextStyle.copyWith(
+                  fontSize: 14,
+                  color: greyColor,
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        cartProvider.removeCart(cart.id);
+                      },
+                      child: Image.asset(
+                        'assets/icon_trash.png',
+                        width: 24,
+                        color: greyColor,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image.asset(
-                    'assets/icon_plus.png',
-                    width: 24,
-                  ),
-                ],
+                    SizedBox(
+                      width: 30,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        cartProvider.reduceQuantity(cart.id);
+                      },
+                      child: Image.asset(
+                        'assets/icon_minus.png',
+                        width: 24,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      cart.quantity.toString(),
+                      style: blackTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: medium,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        cartProvider.addQuantity(cart.id);
+                      },
+                      child: Image.asset(
+                        'assets/icon_plus.png',
+                        width: 24,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

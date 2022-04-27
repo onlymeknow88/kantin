@@ -149,16 +149,6 @@ class AkunPage extends StatelessWidget {
                 onTap: () {
                   // Navigator.pushNamed(context, '/edit-profile');
                   Navigator.of(context)
-                      .push(CustomPageRoute(child: OrderListPage()));
-                },
-                child: menuItem(
-                  'Orders List',
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Navigator.pushNamed(context, '/edit-profile');
-                  Navigator.of(context)
                       .push(CustomPageRoute(child: AddProdukPage()));
                 },
                 child: menuItem(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/models/user_model.dart';
 import 'package:kantin/services/auth.service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   UserModel _user;
@@ -10,6 +11,11 @@ class AuthProvider with ChangeNotifier {
   set user(UserModel user) {
     _user = user;
     notifyListeners();
+  }
+
+  Future<String> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
   }
 
   Future<bool> register({

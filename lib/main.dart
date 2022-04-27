@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/pages/add_produk.dart';
 import 'package:kantin/pages/cart_page.dart';
+import 'package:kantin/pages/checkout_page.dart';
 import 'package:kantin/pages/checkout_success_page.dart';
 import 'package:kantin/pages/edit_profile.dart';
 import 'package:kantin/pages/home/main_page.dart';
@@ -11,7 +12,10 @@ import 'package:kantin/pages/sign_in_page.dart';
 import 'package:kantin/pages/sign_up_page.dart';
 import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/cart_provider.dart';
+import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
+import 'package:kantin/providers/transaction_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -30,6 +34,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ProductProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TransactionProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PageProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -43,7 +56,8 @@ class MyApp extends StatelessWidget {
           '/order-detail': (context) => OrderDetailPage(),
           '/search': (context) => SearchPage(),
           '/cart': (context) => CartPage(),
-          '/checkoutsuccess': (context) => CheckoutSuccessPage(),
+          '/checkout': (context) => CheckoutPage(),
+          '/checkout-success': (context) => CheckoutSuccessPage(),
           '/add-produk': (context) => AddProdukPage(),
         },
       ),

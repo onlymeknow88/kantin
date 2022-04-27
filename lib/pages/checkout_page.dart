@@ -1,9 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/cart_provider.dart';
+import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:kantin/widgets/cart_item.dart';
+import 'package:kantin/widgets/currency_format.dart';
+import 'package:provider/provider.dart';
 
-class CheckoutPage extends StatelessWidget {
+class CheckoutPage extends StatefulWidget {
+  @override
+  State<CheckoutPage> createState() => _CheckoutPageState();
+}
+
+class _CheckoutPageState extends State<CheckoutPage> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+    TransactionProvider transactionProvider =
+        Provider.of<TransactionProvider>(context);
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    handleCheckout() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await transactionProvider.checkout(
+        authProvider.user.token,
+        cartProvider.carts,
+        cartProvider.totalPrice(),
+      )) {
+        cartProvider.carts = [];
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/checkout-success', (route) => false);
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     Widget header() {
       return AppBar(
         backgroundColor: whiteColor,
@@ -51,12 +88,17 @@ class CheckoutPage extends StatelessWidget {
                         fontWeight: bold,
                       ),
                     ),
-                    Text(
-                      'Edit',
-                      style: blackTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: bold,
-                        decoration: TextDecoration.underline,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/cart');
+                      },
+                      child: Text(
+                        'Edit',
+                        style: blackTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: bold,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     )
                   ],
@@ -64,23 +106,12 @@ class CheckoutPage extends StatelessWidget {
                 SizedBox(
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '2 item',
-                      style: subtitleTextStyle.copyWith(
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      'Rp30.000',
-                      style: blackTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: bold,
-                      ),
-                    )
-                  ],
+                Column(
+                  children: cartProvider.carts
+                      .map(
+                        (cart) => CartItem(cart),
+                      )
+                      .toList(),
                 ),
               ],
             ),
@@ -127,13 +158,14 @@ class CheckoutPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Subtotal (2 item)',
+                      'Subtotal (${cartProvider.totalItems()} item)',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      'Rp30.000',
+                      CurrencyFormat.convertToIdr(
+                          cartProvider.subtotalItem(), 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -148,13 +180,13 @@ class CheckoutPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Diskon',
+                      'Fee',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      '-',
+                      CurrencyFormat.convertToIdr(3000, 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -181,7 +213,7 @@ class CheckoutPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Rp30.000',
+                      CurrencyFormat.convertToIdr(cartProvider.totalPrice(), 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -213,7 +245,7 @@ class CheckoutPage extends StatelessWidget {
                       height: 3,
                     ),
                     Text(
-                      'Rp30.000',
+                      CurrencyFormat.convertToIdr(cartProvider.totalPrice(), 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -233,9 +265,7 @@ class CheckoutPage extends StatelessWidget {
                         fontWeight: bold,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/checkoutsuccess');
-                    },
+                    onPressed: handleCheckout,
                     style: ElevatedButton.styleFrom(
                       elevation: 0.0,
                       primary: blueColor,

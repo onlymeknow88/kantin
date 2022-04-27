@@ -6,12 +6,10 @@ class ProductService {
   String baseUrl = 'http://103.183.75.223/api';
 
   Future<List<ProductModel>> getProducts() async {
-    var url = '$baseUrl/products';
+    var url = '$baseUrl/products?tags=Recommended';
     var headers = {'Content-Type': 'application/json'};
 
     var response = await http.get(Uri.parse(url), headers: headers);
-
-    print(response.body);
 
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body)['data']['data'];

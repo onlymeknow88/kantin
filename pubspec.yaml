@@ -38,6 +38,9 @@ dependencies:
   url_launcher: ^6.0.20
   provider: ^4.3.3
   http: ^0.12.2
+  carousel_slider: ^3.0.0
+  intl: ^0.16.0
+  shared_preferences: ^2.0.6
 
 
 dev_dependencies:

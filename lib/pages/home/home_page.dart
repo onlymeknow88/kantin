@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/pages/cart_page.dart';
 import 'package:kantin/pages/search_page.dart';
+import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
@@ -74,8 +75,8 @@ class HomePage extends StatelessWidget {
           GestureDetector(
             onTap: () {
               // print('go to search page');
-              // Navigator.pushNamed(context, '/cart');
-              Navigator.of(context).push(CustomPageRoute(child: CartPage()));
+              Navigator.pushNamed(context, '/cart');
+              // Navigator.of(context).push(CustomPageRoute(child: CartPage()));
             },
             child: Container(
               height: 44,
@@ -276,5 +277,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-class ProductCard {}

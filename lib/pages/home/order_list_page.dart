@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/page_provider.dart';
+import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/order_list_card.dart';
+import 'package:provider/provider.dart';
 
 class OrderListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    TransactionProvider transactionProvider =
+        Provider.of<TransactionProvider>(context);
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    transactionProvider.getTransactions(authProvider.user.token);
+
     Widget header() {
       return AppBar(
         backgroundColor: whiteColor,
@@ -17,7 +27,8 @@ class OrderListPage extends StatelessWidget {
             size: 24,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/home');
+            // Navigator.pushNamed(context, '/home');
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -37,14 +48,11 @@ class OrderListPage extends StatelessWidget {
           horizontal: defaultMargin,
         ),
         child: ListView(
-          children: [
-            OrdersCard(),
-            OrdersCard(),
-            OrdersCard(),
-            OrdersCard(),
-            OrdersCard(),
-            OrdersCard(),
-          ],
+          children: transactionProvider.transactions
+              .map(
+                (transaction) => OrdersCard(transaction),
+              )
+              .toList(),
         ),
       );
     }

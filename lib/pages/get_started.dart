@@ -74,7 +74,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/sign-up');
+                      Navigator.pushNamed(context, '/sign-in');
                     },
                     child: Center(
                         child: Text('Get Started',

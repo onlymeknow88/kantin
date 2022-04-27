@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/models/transaction_model.dart';
 import 'package:kantin/theme.dart';
 
 class OrdersCard extends StatelessWidget {
+  final TransactionModel transaction;
+  OrdersCard(this.transaction);
+
   @override
   Widget build(BuildContext context) {
+    // print(transaction.status);
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/order-detail');
@@ -31,7 +36,7 @@ class OrdersCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Order ID: #123456789',
+                  'Order ID: #${transaction.id}',
                   style: blackTextStyle.copyWith(
                     fontWeight: semiBold,
                     fontSize: 14,
@@ -57,7 +62,8 @@ class OrdersCard extends StatelessWidget {
                 color: lightBlueColor,
               ),
               child: Text(
-                'Pending',
+                // '${transaction.status}',
+                transaction.status,
                 style: primaryTextStyle.copyWith(
                   fontSize: 12,
                   fontWeight: medium,

@@ -2,9 +2,19 @@ import 'dart:convert';
 
 import 'package:kantin/models/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   String baseUrl = 'http://103.183.75.223/api';
+
+  bool _isAuthenticated = false;
+
+  bool get isAuthenticated => _isAuthenticated;
+
+  saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+  }
 
   Future<UserModel> register({
     String name,
@@ -63,6 +73,9 @@ class AuthService {
       var data = jsonDecode(response.body)['data'];
       UserModel user = UserModel.fromJson(data['user']);
       user.token = 'Bearer ' + data['access_token'];
+
+      // await saveToken(user.token);
+      // _isAuthenticated = true;
 
       return user;
     } else {

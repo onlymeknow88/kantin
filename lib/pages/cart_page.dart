@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/models/cart_model.dart';
+// import 'package:kantin/models/product_model.dart';
 import 'package:kantin/pages/checkout_page.dart';
+import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/cart_card.dart';
+import 'package:kantin/widgets/cart_item.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
+import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     Widget header() {
       return AppBar(
         backgroundColor: whiteColor,
@@ -96,10 +102,11 @@ class CartPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           horizontal: defaultMargin,
         ),
-        children: [
-          CartCard(),
-          CartCard(),
-        ],
+        children: cartProvider.carts
+            .map(
+              (cart) => CartCard(cart),
+            )
+            .toList(),
       );
     }
 
@@ -127,7 +134,7 @@ class CartPage extends StatelessWidget {
                         height: 3,
                       ),
                       Text(
-                        '2 Item',
+                        '${cartProvider.totalItems()} Item',
                         style: blackTextStyle.copyWith(
                             fontSize: 14, fontWeight: bold),
                       ),
@@ -144,7 +151,7 @@ class CartPage extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return Wrap(
-                              children: <Widget>[
+                              children: [
                                 Container(
                                   margin: EdgeInsets.symmetric(
                                     vertical: defaultMargin,
@@ -165,44 +172,14 @@ class CartPage extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 16,
+                                        height: 6,
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '1 * Nasi Goreng Kambing',
-                                            style: subtitleTextStyle,
-                                          ),
-                                          Text(
-                                            'Rp15.000',
-                                            style: blackTextStyle.copyWith(
-                                              fontSize: 12,
-                                              fontWeight: bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '1 * Es Teh',
-                                            style: subtitleTextStyle,
-                                          ),
-                                          Text(
-                                            'Rp15.000',
-                                            style: blackTextStyle.copyWith(
-                                              fontSize: 12,
-                                              fontWeight: bold,
-                                            ),
-                                          ),
-                                        ],
+                                      Column(
+                                        children: cartProvider.carts
+                                            .map(
+                                              (cart) => CartItem(cart),
+                                            )
+                                            .toList(),
                                       ),
                                       SizedBox(
                                         height: 20,
@@ -219,7 +196,7 @@ class CartPage extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            'Rp30.000',
+                                            'Rp${cartProvider.subtotalItem()}',
                                             style: blackTextStyle.copyWith(
                                               fontSize: 14,
                                               fontWeight: bold,
@@ -232,7 +209,7 @@ class CartPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                ),
+                                )
                               ],
                             );
                           });
@@ -252,19 +229,18 @@ class CartPage extends StatelessWidget {
               height: 8,
             ),
             Container(
-              height: 44,
+              height: 50,
               margin: EdgeInsets.symmetric(
                 horizontal: defaultMargin,
               ),
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(CustomPageRoute(child: CheckoutPage()));
+                  Navigator.pushNamed(context, '/checkout');
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: blueColor,
                   padding: EdgeInsets.symmetric(
-                    vertical: 12,
+                    vertical: 14,
                     horizontal: 16,
                   ),
                   shape: RoundedRectangleBorder(
@@ -277,7 +253,7 @@ class CartPage extends StatelessWidget {
                     Text(
                       'Continue to Checkout',
                       style: whiteTextStyle.copyWith(
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: semiBold,
                       ),
                     ),
