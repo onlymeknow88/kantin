@@ -13,9 +13,9 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+  Future<void> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
   }
 
   Future<bool> register({
@@ -67,6 +67,26 @@ class AuthProvider with ChangeNotifier {
       );
 
       _user = null;
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> autologin({
+    String token,
+    String email,
+    String password,
+  }) async {
+    try {
+      UserModel user = await AuthService().autologin(
+        token: token,
+        email: email,
+        password: password,
+      );
+
+      _user = user;
       return true;
     } catch (e) {
       print(e);

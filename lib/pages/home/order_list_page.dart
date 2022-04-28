@@ -14,6 +14,7 @@ class OrderListPage extends StatelessWidget {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     transactionProvider.getTransactions(authProvider.user.token);
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
 
     Widget header() {
       return AppBar(
@@ -27,8 +28,7 @@ class OrderListPage extends StatelessWidget {
             size: 24,
           ),
           onPressed: () {
-            // Navigator.pushNamed(context, '/home');
-            Navigator.pop(context);
+            pageProvider.changePage(0);
           },
         ),
         title: Text(

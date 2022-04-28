@@ -111,164 +111,169 @@ class CartPage extends StatelessWidget {
     }
 
     Widget customBottomNav() {
-      return Container(
-        height: 120,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: defaultMargin,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      return cartProvider.totalPrice() == 0
+          ? Container()
+          : Container(
+              height: 120,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Cart',
-                        style: blackTextStyle.copyWith(
-                            fontSize: 14, fontWeight: regular),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: defaultMargin,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Cart',
+                              style: blackTextStyle.copyWith(
+                                  fontSize: 14, fontWeight: regular),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(
+                              '${cartProvider.totalItems()} Item',
+                              style: blackTextStyle.copyWith(
+                                  fontSize: 14, fontWeight: bold),
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 3,
-                      ),
-                      Text(
-                        '${cartProvider.totalItems()} Item',
-                        style: blackTextStyle.copyWith(
-                            fontSize: 14, fontWeight: bold),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: defaultMargin,
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Wrap(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: defaultMargin,
+                                          horizontal: defaultMargin,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              height: 16,
+                                            ),
+                                            Text(
+                                              'Ringkasan Belanja',
+                                              style: blackTextStyle.copyWith(
+                                                fontSize: 18,
+                                                fontWeight: bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 6,
+                                            ),
+                                            Column(
+                                              children: cartProvider.carts
+                                                  .map(
+                                                    (cart) => CartItem(cart),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Subtotal',
+                                                  style: subtitleTextStyle
+                                                      .copyWith(
+                                                    fontWeight: bold,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Rp${cartProvider.subtotalItem()}',
+                                                  style:
+                                                      blackTextStyle.copyWith(
+                                                    fontSize: 14,
+                                                    fontWeight: bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 30,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Text(
+                            'Detail',
+                            style: blackTextStyle.copyWith(
+                              fontSize: 14,
+                              fontWeight: bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: defaultMargin,
+                  SizedBox(
+                    height: 8,
                   ),
-                  child: TextButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return Wrap(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: defaultMargin,
-                                    horizontal: defaultMargin,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 16,
-                                      ),
-                                      Text(
-                                        'Ringkasan Belanja',
-                                        style: blackTextStyle.copyWith(
-                                          fontSize: 18,
-                                          fontWeight: bold,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 6,
-                                      ),
-                                      Column(
-                                        children: cartProvider.carts
-                                            .map(
-                                              (cart) => CartItem(cart),
-                                            )
-                                            .toList(),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Subtotal',
-                                            style: subtitleTextStyle.copyWith(
-                                              fontWeight: bold,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Rp${cartProvider.subtotalItem()}',
-                                            style: blackTextStyle.copyWith(
-                                              fontSize: 14,
-                                              fontWeight: bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 30,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    child: Text(
-                      'Detail',
-                      style: blackTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: bold,
+                  Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: defaultMargin,
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/checkout');
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: blueColor,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 14,
+                          horizontal: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Continue to Checkout',
+                            style: whiteTextStyle.copyWith(
+                              fontSize: 16,
+                              fontWeight: semiBold,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: whiteColor,
+                            size: 24,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              height: 50,
-              margin: EdgeInsets.symmetric(
-                horizontal: defaultMargin,
+                ],
               ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/checkout');
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: blueColor,
-                  padding: EdgeInsets.symmetric(
-                    vertical: 14,
-                    horizontal: 16,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Continue to Checkout',
-                      style: whiteTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward,
-                      color: whiteColor,
-                      size: 24,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+            );
     }
 
     return Scaffold(

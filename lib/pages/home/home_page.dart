@@ -14,87 +14,90 @@ class HomePage extends StatelessWidget {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     Widget searchInput() {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 44,
-            width: MediaQuery.of(context).size.width * 0.764,
-            margin: EdgeInsets.only(
-              left: 16,
-              top: 16,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12,
-            ),
-            decoration: BoxDecoration(
-              color: lightGrayColor,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/search');
-                      // Navigator.of(context)
-                      //     .push(CustomPageRoute(child: SearchPage()));
-                    },
-                    child: Image.asset(
-                      'assets/icon_search.png',
-                      width: 22,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: TextFormField(
+      return Container(
+        margin: EdgeInsets.only(
+          top: 10,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 44,
+              width: MediaQuery.of(context).size.width * 0.764,
+              margin: EdgeInsets.only(
+                left: 16,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12,
+              ),
+              decoration: BoxDecoration(
+                color: lightGrayColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Row(
+                  children: [
+                    GestureDetector(
                       onTap: () {
-                        // print(value); //go to search page
                         Navigator.pushNamed(context, '/search');
                         // Navigator.of(context)
                         //     .push(CustomPageRoute(child: SearchPage()));
                       },
-                      showCursor: false,
-                      readOnly: true,
-                      style: blackTextStyle,
-                      decoration: InputDecoration.collapsed(
-                        hintText: 'Cari...',
-                        hintStyle: subtitleTextStyle,
+                      child: Image.asset(
+                        'assets/icon_search.png',
+                        width: 22,
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        onTap: () {
+                          // print(value); //go to search page
+                          Navigator.pushNamed(context, '/search');
+                          // Navigator.of(context)
+                          //     .push(CustomPageRoute(child: SearchPage()));
+                        },
+                        showCursor: false,
+                        readOnly: true,
+                        style: blackTextStyle,
+                        decoration: InputDecoration.collapsed(
+                          hintText: 'Cari...',
+                          hintStyle: subtitleTextStyle,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          GestureDetector(
-            onTap: () {
-              // print('go to search page');
-              Navigator.pushNamed(context, '/cart');
-              // Navigator.of(context).push(CustomPageRoute(child: CartPage()));
-            },
-            child: Container(
-              height: 44,
-              width: 44,
-              margin: EdgeInsets.only(
-                top: 16,
-                right: 16,
-              ),
-              decoration: BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Icon(Icons.shopping_cart),
+            SizedBox(
+              width: 16,
+            ),
+            GestureDetector(
+              onTap: () {
+                // print('go to search page');
+                Navigator.pushNamed(context, '/cart');
+                // Navigator.of(context).push(CustomPageRoute(child: CartPage()));
+              },
+              child: Container(
+                height: 44,
+                width: 44,
+                margin: EdgeInsets.only(
+                  right: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Icon(Icons.shopping_cart),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }
 

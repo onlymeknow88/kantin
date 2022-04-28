@@ -11,11 +11,13 @@ import 'package:kantin/pages/search_page.dart';
 import 'package:kantin/pages/sign_in_page.dart';
 import 'package:kantin/pages/sign_up_page.dart';
 import 'package:kantin/pages/get_started.dart';
+import 'package:kantin/pages/splash_screen.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
+import 'package:kantin/services/auth.service.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -46,8 +48,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        home: SplashScreenPage(),
         routes: {
-          '/': (context) => GetStartedPage(),
+          '/get-started': (context) => GetStartedPage(),
           '/sign-in': (context) => SignInPage(),
           '/sign-up': (context) => SignUpPage(),
           '/home': (context) => MainPage(),
@@ -55,7 +58,6 @@ class MyApp extends StatelessWidget {
           '/order': (context) => OrderListPage(),
           '/order-detail': (context) => OrderDetailPage(),
           '/search': (context) => SearchPage(),
-          '/cart': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
           '/add-produk': (context) => AddProdukPage(),

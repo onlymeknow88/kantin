@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/pages/home/main_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -10,9 +12,11 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailController = TextEditingController(text: '');
+  TextEditingController emailController =
+      TextEditingController(text: 'tes@email.com');
 
-  TextEditingController passwordController = TextEditingController(text: '');
+  TextEditingController passwordController =
+      TextEditingController(text: 'qwertyui');
 
   bool isLoading = false;
 
@@ -29,7 +33,14 @@ class _SignInPageState extends State<SignInPage> {
         email: emailController.text,
         password: passwordController.text,
       )) {
-        Navigator.pushNamed(context, '/home');
+        // Navigator.pushNamed(context, '/home');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => MainPage(),
+          ),
+          (route) => false,
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

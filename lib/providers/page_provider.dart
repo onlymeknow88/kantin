@@ -9,4 +9,9 @@ class PageProvider with ChangeNotifier {
     _currentIndex = index;
     notifyListeners();
   }
+
+  void changePage(int index) {
+    _currentIndex = index;
+    notifyListeners();
+  }
 }

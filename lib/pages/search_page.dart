@@ -75,7 +75,7 @@ class SearchPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
+        preferredSize: Size.fromHeight(55.0),
         child: header(),
       ),
       body: produkSearch(),

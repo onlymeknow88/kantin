@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
-import 'package:provider/provider.dart';
 
 class GetStartedPage extends StatefulWidget {
   @override
@@ -9,19 +7,6 @@ class GetStartedPage extends StatefulWidget {
 }
 
 class _GetStartedPageState extends State<GetStartedPage> {
-  void initState() {
-    // TODO: implement initState
-
-    getInit();
-
-    super.initState();
-  }
-
-  getInit() async {
-    await Provider.of<ProductProvider>(context, listen: false).getProducts();
-    // Navigator.pushNamed(context, '/sign-in');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,21 +46,21 @@ class _GetStartedPageState extends State<GetStartedPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                Container(
-                  width: 220,
-                  height: 55,
-                  margin: EdgeInsets.only(
-                    top: 30,
-                    bottom: 80,
-                  ),
-                  decoration: BoxDecoration(
-                    color: blueColor,
-                    borderRadius: BorderRadius.circular(17),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/sign-in');
-                    },
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/sign-in');
+                  },
+                  child: Container(
+                    width: 220,
+                    height: 55,
+                    margin: EdgeInsets.only(
+                      top: 30,
+                      bottom: 80,
+                    ),
+                    decoration: BoxDecoration(
+                      color: blueColor,
+                      borderRadius: BorderRadius.circular(17),
+                    ),
                     child: Center(
                         child: Text('Get Started',
                             style: whiteTextStyle.copyWith(
@@ -83,7 +68,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                               fontWeight: semiBold,
                             ))),
                   ),
-                ),
+                )
               ],
             ),
           ),
