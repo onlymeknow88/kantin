@@ -4,6 +4,7 @@ import 'package:kantin/pages/home/home_page.dart';
 import 'package:kantin/pages/home/order_list_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/page_provider.dart';
+import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:provider/provider.dart';

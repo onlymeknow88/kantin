@@ -17,7 +17,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     // TODO: implement initState
 
     autoLogin();
-    getInit();
 
     super.initState();
   }
@@ -36,6 +35,8 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
         email: email,
         password: password,
       )) {
+        await Provider.of<ProductProvider>(context, listen: false)
+            .getProducts();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -65,14 +66,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     }
   }
 
-  getInit() async {
-    await Provider.of<ProductProvider>(context, listen: false).getProducts();
-    // Navigator.pushNamed(context, '/get-started');
-
-    // setState(() {
-    //   autoLogin();
-    // });
-  }
+  // getInit() async {
+  //   await Provider.of<ProductProvider>(context, listen: false).getProducts();
+  // }
 
   @override
   Widget build(BuildContext context) {

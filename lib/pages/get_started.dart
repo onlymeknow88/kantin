@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:provider/provider.dart';
 
 class GetStartedPage extends StatefulWidget {
   @override
@@ -7,6 +9,18 @@ class GetStartedPage extends StatefulWidget {
 }
 
 class _GetStartedPageState extends State<GetStartedPage> {
+  void initState() {
+    // TODO: implement initState
+
+    gitInit();
+
+    super.initState();
+  }
+
+  gitInit() async {
+    await Provider.of<ProductProvider>(context, listen: false).getProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
