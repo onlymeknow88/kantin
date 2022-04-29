@@ -30,10 +30,20 @@ class ProductModel {
     price = int.parse(json['price'].toString());
     description = json['description'];
     tags = json['tags'];
-    category = CategoryModel.fromJson(json['category']);
-    galleries = json['galleries']
-        .map<GalleryModel>((gallery) => GalleryModel.fromJson(gallery))
-        .toList();
+
+    if (json['category'] == null) {
+      category = null;
+    } else {
+      category = CategoryModel.fromJson(json['category']);
+    }
+    if (json['galleries'] == null) {
+      galleries = null;
+    } else {
+      galleries = json['galleries']
+          .map<GalleryModel>((item) => GalleryModel.fromJson(item))
+          .toList();
+    }
+
     createdAt = DateTime.parse(json['created_at']);
     updatedAt = DateTime.parse(json['updated_at']);
   }
@@ -52,5 +62,3 @@ class ProductModel {
     };
   }
 }
-
-class UninitializedProductModel extends ProductModel {}

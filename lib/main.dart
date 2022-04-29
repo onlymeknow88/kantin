@@ -17,7 +17,6 @@ import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
-import 'package:kantin/services/auth.service.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -55,8 +54,9 @@ class MyApp extends StatelessWidget {
           '/sign-up': (context) => SignUpPage(),
           '/home': (context) => MainPage(),
           '/edit-profile': (context) => EdtiProfilePage(),
+          '/cart': (context) => CartPage(),
           '/order': (context) => OrderListPage(),
-          '/order-detail': (context) => OrderDetailPage(),
+          // '/order-detail': (context) => OrderDetailPage(),
           '/search': (context) => SearchPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),

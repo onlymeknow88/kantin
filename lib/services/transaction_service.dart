@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:kantin/models/cart_model.dart';
+import 'package:kantin/models/product_model.dart';
 import 'package:kantin/models/transaction_model.dart';
 
 class TransactionService {
@@ -11,6 +12,7 @@ class TransactionService {
     var url = '$baseUrl/checkout';
     var headers = {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'Authorization': token,
     };
     var body = jsonEncode(
@@ -47,18 +49,20 @@ class TransactionService {
     var url = '$baseUrl/transactions';
     var headers = {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'Authorization': token,
     };
 
     var response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      print('get order list');
+      var data = jsonDecode(response.body)['data']['data'];
 
       List<TransactionModel> transactions = [];
 
-      for (var item in data['data']['data']) {
-        TransactionModel transaction = TransactionModel.fromJson(item);
+      for (var item in data) {
+        var transaction = TransactionModel.fromJson(item);
         transactions.add(transaction);
       }
 

@@ -27,7 +27,7 @@ class TransactionProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getTransactions(String token) async {
+  Future<bool> getTransactions(String token) async {
     try {
       List<TransactionModel> transactions =
           await TransactionService().getTransactions(token);

@@ -73,11 +73,19 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('name'),
-      ),
+      backgroundColor: whiteColor,
       body: Center(
-        child: Text('name'),
+        child: Container(
+          // width: 130,
+          // height: 150,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/logo.png',
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

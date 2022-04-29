@@ -51,7 +51,7 @@ class _ProductPageState extends State<ProductPage> {
               top: 16,
             ),
             child: Image.network(
-              'http://103.183.75.223/' + widget.product.galleries[0].url,
+              'http://103.183.75.223' + widget.product.galleries[0].url,
               width: MediaQuery.of(context).size.width,
               height: 310,
               fit: BoxFit.cover,
@@ -68,9 +68,6 @@ class _ProductPageState extends State<ProductPage> {
         width: double.infinity,
         // margin: EdgeInsets.only(top: 17),
         decoration: BoxDecoration(
-          // borderRadius: BorderRadius.vertical(
-          //   top: Radius.circular(24),
-          // ),
           color: whiteColor,
         ),
         child: Column(

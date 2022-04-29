@@ -1056,3 +1056,7 @@ Container(
         ],
       ),
     );
+
+    // cart = json['items'] != null
+    //     ? (json['items'] as List).map((i) => CartModel.fromJson(i)).toList()
+    //     : null;

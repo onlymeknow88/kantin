@@ -8,8 +8,6 @@ import 'package:kantin/widgets/currency_format.dart';
 import 'package:provider/provider.dart';
 
 class ProdukCard extends StatelessWidget {
-  // const ProdukCard({Key key, this.product}) : super(key: key);
-
   final ProductModel product;
   ProdukCard(this.product);
 

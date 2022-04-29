@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:kantin/models/cart_model.dart';
 import 'package:kantin/models/transaction_model.dart';
+import 'package:kantin/pages/order_detail.dart';
 import 'package:kantin/theme.dart';
 
 class OrdersCard extends StatelessWidget {
@@ -8,10 +11,17 @@ class OrdersCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(transaction.status);
+    // DateTime date = transaction.createdAt;
+    // String dateString = DateFormat('E, d MMM yyyy HH:mm:ss').format(date);
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/order-detail');
+        // Navigator.pushNamed(context, '/order-detail');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderDetailPage(transaction),
+          ),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -46,7 +56,8 @@ class OrdersCard extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  'Rabu, 19 April 2022 / 10:00',
+                  // 'Status: ${transaction.status}',
+                  '${transaction.items.length} items',
                   style: subtitleTextStyle,
                 ),
               ],
@@ -62,8 +73,8 @@ class OrdersCard extends StatelessWidget {
                 color: lightBlueColor,
               ),
               child: Text(
-                // '${transaction.status}',
                 transaction.status,
+                // 'Pending',
                 style: primaryTextStyle.copyWith(
                   fontSize: 12,
                   fontWeight: medium,

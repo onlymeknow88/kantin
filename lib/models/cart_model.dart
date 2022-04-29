@@ -1,4 +1,5 @@
 import 'package:kantin/models/product_model.dart';
+import 'package:kantin/models/transaction_model.dart';
 
 class CartModel {
   int id;

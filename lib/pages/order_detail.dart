@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:kantin/models/cart_model.dart';
+import 'package:kantin/models/transaction_model.dart';
 import 'package:kantin/theme.dart';
+// import 'package:provider/provider.dart';
 
 class OrderDetailPage extends StatefulWidget {
+  final TransactionModel transaction;
+  OrderDetailPage(this.transaction);
+
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
   @override
-  String _value = '';
   Widget build(BuildContext context) {
+    print(widget.transaction.items[0].quantity);
+
     Widget header() {
       return AppBar(
         backgroundColor: whiteColor,
@@ -72,7 +80,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           left: defaultMargin,
           right: defaultMargin,
         ),
-        children: <Widget>[
+        children: [
           Container(
             child: Column(
               children: [
@@ -87,7 +95,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
-                      'Pending',
+                      // widget.transaction.status,
+                      widget.transaction.status,
+                      // 'Pending',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: semiBold,
@@ -109,7 +119,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
-                      '#1234567890',
+                      '#${widget.transaction.id}',
+                      // '#1',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -153,6 +164,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
+                      // dateString,
                       'Rabu, 19 April 2022 / 10:00',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
@@ -217,6 +229,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
+                                              // widget.transaction.items,
                                               '1 * Nasi Goreng Kambing',
                                               style: subtitleTextStyle,
                                             ),

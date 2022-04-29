@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:provider/provider.dart';
 
-class CheckoutSuccessPage extends StatelessWidget {
+class CheckoutSuccessPage extends StatefulWidget {
+  @override
+  State<CheckoutSuccessPage> createState() => _CheckoutSuccessPageState();
+}
+
+class _CheckoutSuccessPageState extends State<CheckoutSuccessPage> {
+  void initState() {
+    // TODO: implement initState
+
+    getTransaksi();
+
+    super.initState();
+  }
+
+  getTransaksi() async {
+    await Provider.of<TransactionProvider>(context, listen: false)
+        .getTransactions(
+            Provider.of<AuthProvider>(context, listen: false).user.token);
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget header() {
