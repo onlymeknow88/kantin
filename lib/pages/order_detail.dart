@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kantin/models/cart_model.dart';
 import 'package:kantin/models/transaction_model.dart';
+import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/item_detail_provider.dart';
 import 'package:kantin/theme.dart';
-// import 'package:provider/provider.dart';
+import 'package:kantin/widgets/cart_detail.dart';
+import 'package:kantin/widgets/currency_format.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailPage extends StatefulWidget {
   final TransactionModel transaction;
@@ -16,7 +19,14 @@ class OrderDetailPage extends StatefulWidget {
 class _OrderDetailPageState extends State<OrderDetailPage> {
   @override
   Widget build(BuildContext context) {
-    print(widget.transaction.items[0].quantity);
+    DateTime date = widget.transaction.createdAt;
+    String dateString = DateFormat('E, d MMM yyyy HH:mm:ss').format(date);
+    ItemDetailProvider itemDetailProvider =
+        Provider.of<ItemDetailProvider>(context);
+
+    itemDetailProvider.getDetailItem(
+        Provider.of<AuthProvider>(context, listen: false).user.token,
+        widget.transaction.id);
 
     Widget header() {
       return AppBar(
@@ -30,6 +40,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             size: 24,
           ),
           onPressed: () {
+            // setState(() {
+            // });
             Navigator.pop(context);
           },
         ),
@@ -62,11 +74,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             },
             onSelected: (value) {
               // print(value);
-              setState(() {
-                if (value == 'print') {
-                  print(value);
-                }
-              });
+              // setState(() {
+              //   if (value == 'print') {
+              //     print(value);
+              //   }
+              // });
             },
           ),
         ],
@@ -95,9 +107,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
-                      // widget.transaction.status,
                       widget.transaction.status,
-                      // 'Pending',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: semiBold,
@@ -164,8 +174,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
-                      // dateString,
-                      'Rabu, 19 April 2022 / 10:00',
+                      dateString,
+                      // 'Rabu, 19 April 2022 / 10:00',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -201,7 +211,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             context: context,
                             builder: (context) {
                               return Wrap(
-                                children: <Widget>[
+                                children: [
                                   Container(
                                     margin: EdgeInsets.symmetric(
                                       vertical: defaultMargin,
@@ -222,45 +232,16 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 16,
+                                          height: 6,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              // widget.transaction.items,
-                                              '1 * Nasi Goreng Kambing',
-                                              style: subtitleTextStyle,
-                                            ),
-                                            Text(
-                                              'Rp15.000',
-                                              style: blackTextStyle.copyWith(
-                                                fontSize: 12,
-                                                fontWeight: bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '1 * Es Teh',
-                                              style: subtitleTextStyle,
-                                            ),
-                                            Text(
-                                              'Rp15.000',
-                                              style: blackTextStyle.copyWith(
-                                                fontSize: 12,
-                                                fontWeight: bold,
-                                              ),
-                                            ),
-                                          ],
+                                        Column(
+                                          children: itemDetailProvider
+                                              .itemdetails
+                                              .map(
+                                                (itemdetail) =>
+                                                    CartDetailItem(itemdetail),
+                                              )
+                                              .toList(),
                                         ),
                                         SizedBox(
                                           height: 20,
@@ -277,7 +258,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               ),
                                             ),
                                             Text(
-                                              'Rp30.000',
+                                              CurrencyFormat.convertToIdr(
+                                                  widget.transaction.totalPrice,
+                                                  0),
                                               style: blackTextStyle.copyWith(
                                                 fontSize: 14,
                                                 fontWeight: bold,
@@ -290,41 +273,52 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  )
                                 ],
                               );
                             });
                       },
                       child: Text(
                         'Detail',
-                        style: blackTextStyle.copyWith(
-                            fontSize: 14,
-                            fontWeight: bold,
-                            decoration: TextDecoration.underline),
+                        style: primaryTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: bold,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               SizedBox(
                 height: 16,
               ),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '2 item',
-                    style: subtitleTextStyle.copyWith(
-                      fontSize: 14,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Text(
+                          '${widget.transaction.items.length} item${widget.transaction.items.length > 1 ? 's' : ''}',
+                          style: subtitleTextStyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: medium,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        CurrencyFormat.convertToIdr(
+                            widget.transaction.totalPrice, 0),
+                        style: blackTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: bold,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Rp30.000',
-                    style: blackTextStyle.copyWith(
-                      fontSize: 14,
-                      fontWeight: bold,
-                    ),
-                  )
                 ],
               ),
             ],
@@ -356,7 +350,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
-                      'Cash',
+                      widget.transaction.payment,
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -371,13 +365,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Subtotal (2 item)',
+                      'Subtotal (${widget.transaction.items.length} item${widget.transaction.items.length > 1 ? 's' : ''})',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      'Rp30.000',
+                      CurrencyFormat.convertToIdr(
+                          widget.transaction.totalPrice, 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -392,13 +387,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Diskon',
+                      'Pajak Bayar',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      '-',
+                      'Rp 3.000',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -425,7 +420,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
-                      'Rp30.000',
+                      CurrencyFormat.convertToIdr(
+                          widget.transaction.PajakBayar(), 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -482,63 +478,3 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 }
-
-// class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-//   String _value = '';
-//   @override
-//   Widget build(BuildContext context) {
-//     return AppBar(
-//       backgroundColor: whiteColor,
-//       automaticallyImplyLeading: false,
-//       elevation: 0.5,
-//       leading: IconButton(
-//         icon: Icon(
-//           Icons.arrow_back,
-//           color: blackColor,
-//           size: 24,
-//         ),
-//         onPressed: () {
-//           Navigator.pop(context);
-//         },
-//       ),
-//       title: Text(
-//         'Order Detail',
-//         style: TextStyle(
-//           color: blackColor,
-//           fontSize: 18,
-//           fontWeight: bold,
-//         ),
-//       ),
-//       iconTheme: IconThemeData(
-//         color: blackColor,
-//       ),
-//       actions: [
-//         PopupMenuButton(
-//           itemBuilder: (context) {
-//             return [
-//               PopupMenuItem(
-//                 child: Text(
-//                   'Print Nota',
-//                   style: TextStyle(
-//                     fontSize: 14,
-//                     fontWeight: bold,
-//                   ),
-//                 ),
-//                 value: 'print',
-//               ),
-//             ];
-//           },
-//           onSelected: (value) {
-//             setState(() {
-//               // _value = value as String;
-//               print(value);
-//             });
-//           },
-//         ),
-//       ],
-//     );
-//   }
-
-//   @override
-//   Size get preferredSize => const Size.fromHeight(58);
-// }

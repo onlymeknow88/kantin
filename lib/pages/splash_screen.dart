@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/pages/home/main_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/item_detail_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
+import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +39,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       )) {
         await Provider.of<ProductProvider>(context, listen: false)
             .getProducts();
+        await Provider.of<TransactionProvider>(context, listen: false)
+            .getTransactions(token);
+
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

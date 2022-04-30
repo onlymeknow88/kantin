@@ -6,7 +6,12 @@ import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/order_list_card.dart';
 import 'package:provider/provider.dart';
 
-class OrderListPage extends StatelessWidget {
+class OrderListPage extends StatefulWidget {
+  @override
+  State<OrderListPage> createState() => _OrderListPageState();
+}
+
+class _OrderListPageState extends State<OrderListPage> {
   @override
   Widget build(BuildContext context) {
     TransactionProvider transactionProvider =
@@ -53,9 +58,6 @@ class OrderListPage extends StatelessWidget {
                 (transaction) => OrdersCard(transaction),
               )
               .toList(),
-          // children: [
-          //   OrdersCard(),
-          // ],
         ),
       );
     }

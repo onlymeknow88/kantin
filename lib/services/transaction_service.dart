@@ -56,7 +56,7 @@ class TransactionService {
     var response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-      print('get order list');
+      // print('get order list');
       var data = jsonDecode(response.body)['data']['data'];
 
       List<TransactionModel> transactions = [];

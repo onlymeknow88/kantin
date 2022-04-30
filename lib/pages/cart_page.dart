@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kantin/models/cart_model.dart';
-// import 'package:kantin/models/product_model.dart';
-import 'package:kantin/pages/checkout_page.dart';
 import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/cart_card.dart';
 import 'package:kantin/widgets/cart_item.dart';
-import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {

@@ -14,6 +14,7 @@ import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/pages/splash_screen.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/cart_provider.dart';
+import 'package:kantin/providers/item_detail_provider.dart';
 import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
           create: (context) => CartProvider(),
         ),
         ChangeNotifierProvider(
+          create: (context) => ItemDetailProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => TransactionProvider(),
         ),
         ChangeNotifierProvider(
@@ -56,7 +60,6 @@ class MyApp extends StatelessWidget {
           '/edit-profile': (context) => EdtiProfilePage(),
           '/cart': (context) => CartPage(),
           '/order': (context) => OrderListPage(),
-          // '/order-detail': (context) => OrderDetailPage(),
           '/search': (context) => SearchPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
