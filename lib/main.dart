@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kantin/pages/add_produk.dart';
 import 'package:kantin/pages/cart_page.dart';
 import 'package:kantin/pages/checkout_page.dart';
@@ -6,7 +7,6 @@ import 'package:kantin/pages/checkout_success_page.dart';
 import 'package:kantin/pages/edit_profile.dart';
 import 'package:kantin/pages/home/main_page.dart';
 import 'package:kantin/pages/home/order_list_page.dart';
-import 'package:kantin/pages/order_detail.dart';
 import 'package:kantin/pages/search_page.dart';
 import 'package:kantin/pages/sign_in_page.dart';
 import 'package:kantin/pages/sign_up_page.dart';
@@ -14,14 +14,14 @@ import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/pages/splash_screen.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/cart_provider.dart';
-import 'package:kantin/providers/item_detail_provider.dart';
 import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null).then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,9 +38,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => CartProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ItemDetailProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => TransactionProvider(),

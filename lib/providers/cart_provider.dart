@@ -57,7 +57,7 @@ class CartProvider with ChangeNotifier {
   }
 
   subtotalItem() {
-    int subitem = 0;
+    double subitem = 0;
     for (var item in _carts) {
       subitem += (item.quantity * item.product.price);
     }
@@ -65,9 +65,10 @@ class CartProvider with ChangeNotifier {
   }
 
   totalPrice() {
-    int total = 0;
+    double total = 0;
     for (var item in _carts) {
-      total += (item.quantity * item.product.price + 3000);
+      total += ((item.quantity * item.product.price) * 0.2 +
+          item.quantity * item.product.price);
     }
     return total;
   }

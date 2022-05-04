@@ -3,7 +3,6 @@ import 'package:kantin/pages/home/akun_page.dart';
 import 'package:kantin/pages/home/home_page.dart';
 import 'package:kantin/pages/home/order_list_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
-import 'package:kantin/providers/item_detail_provider.dart';
 import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
@@ -21,7 +20,6 @@ class _MainPageState extends State<MainPage> {
 
   void initState() {
     // TODO: implement initState
-
     getTransaksi();
     super.initState();
   }
@@ -42,6 +40,9 @@ class _MainPageState extends State<MainPage> {
         currentIndex: pageProvider.currentIndex,
         onTap: (value) {
           pageProvider.currentIndex = value;
+          if (value == 1) {
+            getTransaksi();
+          }
         },
         backgroundColor: whiteColor,
         selectedItemColor: blackColor,

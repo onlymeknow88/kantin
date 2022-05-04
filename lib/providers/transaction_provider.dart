@@ -13,10 +13,24 @@ class TransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> checkout(
-      String token, List<CartModel> carts, int totalPrice) async {
+  Future<bool> checkout(String token, List<CartModel> carts, double totalPrice,
+      double subTotaItem) async {
     try {
-      if (await TransactionService().checkout(token, carts, totalPrice)) {
+      if (await TransactionService()
+          .checkout(token, carts, totalPrice, subTotaItem)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> cancelOrder(String token, int id) async {
+    try {
+      if (await TransactionService().cancelOrder(token,id)) {
         return true;
       } else {
         return false;
@@ -37,5 +51,22 @@ class TransactionProvider with ChangeNotifier {
     }
   }
 
-  
+  List<CartModel> _itemdetails = [];
+
+  List<CartModel> get itemdetails => _itemdetails;
+
+  set itemdetails(List<CartModel> itemdetails) {
+    _itemdetails = itemdetails;
+    notifyListeners();
+  }
+
+  Future<bool> getDetailItem(String token, int id) async {
+    try {
+      List<CartModel> itemdetails =
+          await TransactionService().getDetailItem(token, id);
+      _itemdetails = itemdetails;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

@@ -1,12 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kantin/models/transaction_model.dart';
+import 'package:kantin/pages/home/main_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
-import 'package:kantin/providers/item_detail_provider.dart';
+import 'package:kantin/providers/page_provider.dart';
+import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/cart_detail.dart';
 import 'package:kantin/widgets/currency_format.dart';
+import 'package:kantin/widgets/custom_page_route.dart';
+import 'package:kantin/widgets/nota_card.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 class OrderDetailPage extends StatefulWidget {
   final TransactionModel transaction;
@@ -20,13 +26,342 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   @override
   Widget build(BuildContext context) {
     DateTime date = widget.transaction.createdAt;
-    String dateString = DateFormat('E, d MMM yyyy HH:mm:ss').format(date);
-    ItemDetailProvider itemDetailProvider =
-        Provider.of<ItemDetailProvider>(context);
+    String dateString =
+        DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID').format(date);
 
-    itemDetailProvider.getDetailItem(
+    TransactionProvider transactionProvider =
+        Provider.of<TransactionProvider>(context);
+
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    transactionProvider.getDetailItem(
         Provider.of<AuthProvider>(context, listen: false).user.token,
         widget.transaction.id);
+
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
+
+    cancelOrder() async {
+      if (await transactionProvider.cancelOrder(
+          authProvider.user.token, widget.transaction.id)) {
+        await transactionProvider.getTransactions(authProvider.user.token);
+        Navigator.of(context).pushAndRemoveUntil(
+          CustomPageRoute(
+            child: MainPage(),
+          ),
+          (route) => false,
+        );
+        pageProvider.changePage(1);
+      }
+    }
+
+    Future<bool> showDialogCancel() {
+      return showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            content: Text('Apakah anda yakin ingin membatalkan pesanan?'),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'Tidak',
+                  style: blackTextStyle.copyWith(
+                    fontSize: 14,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Ya',
+                  style: primaryTextStyle.copyWith(
+                    fontWeight: bold,
+                  ),
+                ),
+                onPressed: () {
+                  cancelOrder();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Widget headerNota() {
+      return AppBar(
+        backgroundColor: whiteColor,
+        automaticallyImplyLeading: false,
+        elevation: 0.5,
+        leading: IconButton(
+          icon: Icon(
+            Icons.close,
+            color: blackColor,
+            size: 24,
+          ),
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+        ),
+        title: Text(
+          'Nota',
+          style: TextStyle(
+            color: blackColor,
+            fontSize: 18,
+            fontWeight: bold,
+          ),
+        ),
+        iconTheme: IconThemeData(
+          color: blackColor,
+        ),
+      );
+    }
+
+    Future<bool> showModal() {
+      return showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Wrap(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    vertical: defaultMargin,
+                    horizontal: defaultMargin,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Text(
+                        'Ringkasan Belanja',
+                        style: blackTextStyle.copyWith(
+                          fontSize: 18,
+                          fontWeight: bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Column(
+                        children: transactionProvider.itemdetails
+                            .map(
+                              (itemdetail) => CartDetailItem(itemdetail),
+                            )
+                            .toList(),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            );
+          });
+    }
+
+    Future<bool> notaDetail() {
+      return showGeneralDialog(
+        context: context,
+        barrierColor: whiteColor.withOpacity(0.1),
+        barrierDismissible: false,
+        transitionDuration: Duration(milliseconds: 300),
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return SafeArea(
+            child: Scaffold(
+              backgroundColor: whiteColor,
+              appBar: headerNota(),
+              body: SingleChildScrollView(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  margin: EdgeInsets.only(
+                    top: 36,
+                    left: defaultMargin,
+                    right: defaultMargin,
+                  ),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          'Kantin Online',
+                          style: blackTextStyle.copyWith(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Center(
+                        child: Text(
+                          'Alamat: Jl. Milenium Satu Arah No.01 RT.01',
+                          style: blackTextStyle.copyWith(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          'Kalimantan Timunr, Balikpapan 76123',
+                          style: blackTextStyle.copyWith(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Center(
+                        child: Text(
+                          '${authProvider.user.name} : ${dateString}',
+                          style: blackTextStyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        child: Center(
+                          child: Text(
+                              '=============================================='),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        height: 200,
+                        child: SfBarcodeGenerator(
+                          value: widget.transaction.id.toString(),
+                          symbology: QRCode(),
+                          showValue: false,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Center(
+                        child: Text(
+                          'ORDER ID: ${widget.transaction.id}',
+                          style: blackTextStyle.copyWith(
+                            fontSize: 24,
+                            fontWeight: bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Produk',
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: bold,
+                              )),
+                          Text('Harga',
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: bold,
+                              )),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: transactionProvider.itemdetails
+                            .map(
+                              (itemdetail) => NotaCard(itemdetail),
+                            )
+                            .toList(),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        child: Center(
+                          child: Text(
+                              '============================================'),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'SubTotal:',
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: bold,
+                              ),
+                            ),
+                            Text(
+                              CurrencyFormat.convertToIdr(
+                                  widget.transaction.subTotalItem, 0),
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total Harga + PPN (20%):',
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: bold,
+                              ),
+                            ),
+                            Text(
+                              CurrencyFormat.convertToIdr(
+                                  widget.transaction.totalPrice, 0),
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
 
     Widget header() {
       return AppBar(
@@ -40,8 +375,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             size: 24,
           ),
           onPressed: () {
-            // setState(() {
-            // });
             Navigator.pop(context);
           },
         ),
@@ -62,7 +395,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               return [
                 PopupMenuItem(
                   child: Text(
-                    'Print Nota',
+                    'Nota',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: bold,
@@ -73,12 +406,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               ];
             },
             onSelected: (value) {
-              // print(value);
-              // setState(() {
-              //   if (value == 'print') {
-              //     print(value);
-              //   }
-              // });
+              notaDetail();
             },
           ),
         ],
@@ -152,7 +480,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     Text(
-                      'Ace On',
+                      authProvider.user.name,
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -204,122 +532,64 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       fontWeight: bold,
                     ),
                   ),
-                  Container(
-                    child: GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return Wrap(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                      vertical: defaultMargin,
-                                      horizontal: defaultMargin,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: 16,
-                                        ),
-                                        Text(
-                                          'Ringkasan Belanja',
-                                          style: blackTextStyle.copyWith(
-                                            fontSize: 18,
-                                            fontWeight: bold,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 6,
-                                        ),
-                                        Column(
-                                          children: itemDetailProvider
-                                              .itemdetails
-                                              .map(
-                                                (itemdetail) =>
-                                                    CartDetailItem(itemdetail),
-                                              )
-                                              .toList(),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Subtotal',
-                                              style: subtitleTextStyle.copyWith(
-                                                fontWeight: bold,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            Text(
-                                              CurrencyFormat.convertToIdr(
-                                                  widget.transaction.totalPrice,
-                                                  0),
-                                              style: blackTextStyle.copyWith(
-                                                fontSize: 14,
-                                                fontWeight: bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 30,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              );
-                            });
-                      },
-                      child: Text(
-                        'Detail',
-                        style: primaryTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       setState(() {
+                  //         showModal();
+                  //       });
+                  //     },
+                  //     child: Text(
+                  //       'Detail',
+                  //       style: primaryTextStyle.copyWith(
+                  //         fontSize: 14,
+                  //         fontWeight: bold,
+                  //         decoration: TextDecoration.underline,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(
                 height: 16,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Text(
-                          '${widget.transaction.items.length} item${widget.transaction.items.length > 1 ? 's' : ''}',
-                          style: subtitleTextStyle.copyWith(
-                            fontSize: 14,
-                            fontWeight: medium,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showModal();
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Text(
+                            '${widget.transaction.items.length} item${widget.transaction.items.length > 1 ? 's' : ''}',
+                            style: primaryTextStyle.copyWith(
+                              fontSize: 14,
+                              fontWeight: bold,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        CurrencyFormat.convertToIdr(
-                            widget.transaction.totalPrice, 0),
-                        style: blackTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: bold,
+                        Text(
+                          CurrencyFormat.convertToIdr(
+                              widget.transaction.subTotalItem, 0),
+                          style: primaryTextStyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: bold,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -372,7 +642,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     Text(
                       CurrencyFormat.convertToIdr(
-                          widget.transaction.totalPrice, 0),
+                          widget.transaction.subTotalItem, 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -382,27 +652,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ),
                 SizedBox(
                   height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Pajak Bayar',
-                      style: subtitleTextStyle.copyWith(
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      'Rp 3.000',
-                      style: blackTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: bold,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
                 ),
                 Divider(
                   thickness: 0.8,
@@ -414,14 +663,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Total',
+                      'Total Harga + PPN (20%)',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
                       ),
                     ),
                     Text(
                       CurrencyFormat.convertToIdr(
-                          widget.transaction.PajakBayar(), 0),
+                          widget.transaction.totalPrice, 0),
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -436,21 +685,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             height: 16,
           ),
           Container(
-            height: 32,
+            height: 40,
             margin: EdgeInsets.only(
               top: defaultMargin,
             ),
             padding: EdgeInsets.only(
-              right: 232,
+              right: 200,
             ),
             child: TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
+              onPressed: showDialogCancel,
               child: Text(
-                'Cancel Order',
+                'Batalkan Pesanan',
                 style: primaryTextStyle.copyWith(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: bold,
                 ),
               ),
@@ -459,7 +706,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                // padding: EdgeInsets.symmetric(horizontal: 16),
               ),
             ),
           ),
@@ -477,4 +724,51 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       // bottomNavigationBar: customBottomNav(),
     );
   }
+}
+
+_displayDialog(BuildContext context) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: false,
+    transitionDuration: Duration(milliseconds: 300),
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).animate(animation),
+        child: child,
+      );
+    },
+    pageBuilder: (context, animation, secondaryAnimation) {
+      return SafeArea(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.all(20),
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'Hai This Is Full Screen Dialog',
+                  style: TextStyle(color: Colors.red, fontSize: 20.0),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "DISMISS",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

@@ -30,6 +30,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
         authProvider.user.token,
         cartProvider.carts,
         cartProvider.totalPrice(),
+        cartProvider.subtotalItem(),
+
       )) {
         cartProvider.carts = [];
         Navigator.pushNamedAndRemoveUntil(
@@ -180,13 +182,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Fee',
+                      'Ppn',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      CurrencyFormat.convertToIdr(3000, 0),
+                      '20%',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,

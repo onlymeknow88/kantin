@@ -3,6 +3,7 @@ import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/cart_card.dart';
 import 'package:kantin/widgets/cart_item.dart';
+import 'package:kantin/widgets/currency_format.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
@@ -196,7 +197,10 @@ class CartPage extends StatelessWidget {
                                                   ),
                                                 ),
                                                 Text(
-                                                  'Rp${cartProvider.subtotalItem()}',
+                                                  CurrencyFormat.convertToIdr(
+                                                      cartProvider
+                                                          .subtotalItem(),
+                                                      0),
                                                   style:
                                                       blackTextStyle.copyWith(
                                                     fontSize: 14,

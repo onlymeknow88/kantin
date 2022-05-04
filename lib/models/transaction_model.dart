@@ -1,11 +1,12 @@
-import 'package:kantin/models/order_model.dart';
+import 'package:kantin/models/cart_model.dart';
 
 class TransactionModel {
   int id;
   String status;
   String payment;
   int totalPrice;
-  List<OrderModel> items;
+  int subTotalItem;
+  List<CartModel> items;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -14,6 +15,7 @@ class TransactionModel {
     this.status,
     this.payment,
     this.totalPrice,
+    this.subTotalItem,
     this.items,
     this.createdAt,
     this.updatedAt,
@@ -24,11 +26,12 @@ class TransactionModel {
     status = json['status'];
     payment = json['payment'];
     totalPrice = json['total_price'];
+    subTotalItem = json['sub_total_item'];
     if (json['items'] == null) {
       items = null;
     } else {
-      items = List<OrderModel>.from(
-          json['items'].map((x) => OrderModel.fromJson(x)));
+      items =
+          List<CartModel>.from(json['items'].map((x) => CartModel.fromJson(x)));
     }
     createdAt = DateTime.parse(json['created_at']);
     updatedAt = DateTime.parse(json['updated_at']);
@@ -40,13 +43,10 @@ class TransactionModel {
       'status': status,
       'payment': payment,
       'total_price': totalPrice,
+      'sub_total_item': subTotalItem,
       'items': List<dynamic>.from(items.map((x) => x.toJson())),
       'created_at': createdAt.toString(),
       'updated_at': updatedAt.toString(),
     };
-  }
-
-  int PajakBayar() {
-    return totalPrice + 3000;
   }
 }

@@ -5,6 +5,7 @@ import 'package:kantin/pages/order_detail.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:provider/provider.dart';
 
 class OrdersCard extends StatefulWidget {
@@ -18,21 +19,22 @@ class OrdersCard extends StatefulWidget {
 class _OrdersCardState extends State<OrdersCard> {
   @override
   Widget build(BuildContext context) {
-    // DateTime date = transaction.createdAt;
-    // String dateString = DateFormat('E, d MMM yyyy HH:mm:ss').format(date);
+    DateTime date = widget.transaction.createdAt;
+    String dateString =
+        DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID').format(date);
+
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     Provider.of<TransactionProvider>(context, listen: false)
         .getTransactions(authProvider.user.token);
     return GestureDetector(
       onTap: () {
-        setState(() {});
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) =>
-                OrderDetailPage(widget.transaction),
-          ),
-        );
+        setState(() {
+          Navigator.of(context).push(
+            CustomPageRoute(
+              child: OrderDetailPage(widget.transaction),
+            ),
+          );
+        });
       },
       child: Container(
         margin: EdgeInsets.only(
@@ -67,7 +69,7 @@ class _OrdersCardState extends State<OrdersCard> {
                   height: 2,
                 ),
                 Text(
-                  '${widget.transaction.items.length} items',
+                  dateString,
                   style: subtitleTextStyle,
                 ),
               ],
@@ -84,7 +86,6 @@ class _OrdersCardState extends State<OrdersCard> {
               ),
               child: Text(
                 widget.transaction.status,
-                // 'Pending',
                 style: primaryTextStyle.copyWith(
                   fontSize: 12,
                   fontWeight: medium,
