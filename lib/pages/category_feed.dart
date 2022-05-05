@@ -1,32 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/models/product_model.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
-import 'package:kantin/widgets/produk_search_card.dart';
+import 'package:kantin/widgets/produk_category_card.dart';
+import 'package:kantin/widgets/search_card.dart';
 import 'package:provider/provider.dart';
 
-class SearchPage extends StatefulWidget {
+class CategoryFeedPage extends StatefulWidget {
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<CategoryFeedPage> createState() => _CategoryFeedPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _CategoryFeedPageState extends State<CategoryFeedPage> {
   TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final categoryName = ModalRoute.of(context).settings.arguments as String;
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
+    // productProvider.getProductsByCategory(categoryName);
 
     searchProduct(value) {
       if (value.isEmpty) {
-        setState(() {});
+        setState(() {
+          productProvider.getProductsByCategory(categoryName);
+        });
       } else {
         setState(() {
-          productProvider.getSearch(value.toLowerCase());
+          productProvider.getProductsBySearch(
+              categoryName, value.toLowerCase());
         });
       }
     }
 
     clearProduct() {
       setState(() {
+        productProvider.getProductsByCategory(categoryName);
         searchController.clear();
       });
     }
@@ -80,30 +90,29 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
 
-    Widget produkSearch() {
-      return Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-        ),
-        child: searchController.text.isEmpty
-            ? Center(child: Text('Pencarian Produk kosong!'))
-            : ListView(
-                children: productProvider.productSearch
-                    .map(
-                      (product) => ProdukSearchCard(product),
-                    )
-                    .toList(),
-              ),
-      );
-    }
-
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55.0),
         child: header(),
       ),
-      body: produkSearch(),
+      body: Container(
+        child: searchController.text.isEmpty
+            ? ListView(
+                children: productProvider.productBycategory
+                    .map(
+                      (product) => ProdukCategoryCard(product),
+                    )
+                    .toList(),
+              )
+            : ListView(
+                children: productProvider.productBycategorySearch
+                    .map(
+                      (search) => SearchCard(search),
+                    )
+                    .toList(),
+              ),
+      ),
     );
   }
 }

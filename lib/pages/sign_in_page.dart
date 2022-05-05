@@ -33,7 +33,6 @@ class _SignInPageState extends State<SignInPage> {
         email: emailController.text,
         password: passwordController.text,
       )) {
-        // Navigator.pushNamed(context, '/home');
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kantin/pages/add_produk.dart';
 import 'package:kantin/pages/cart_page.dart';
+import 'package:kantin/pages/category_feed.dart';
 import 'package:kantin/pages/checkout_page.dart';
 import 'package:kantin/pages/checkout_success_page.dart';
 import 'package:kantin/pages/edit_profile.dart';
@@ -14,6 +15,7 @@ import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/pages/splash_screen.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/cart_provider.dart';
+import 'package:kantin/providers/category_provider.dart';
 import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
@@ -32,6 +34,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CategoryProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => ProductProvider(),
@@ -60,6 +65,7 @@ class MyApp extends StatelessWidget {
           '/search': (context) => SearchPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),
+          '/category-feed': (context) => CategoryFeedPage(),
           '/add-produk': (context) => AddProdukPage(),
         },
       ),

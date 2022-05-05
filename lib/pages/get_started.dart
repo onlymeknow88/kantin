@@ -19,6 +19,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
 
   gitInit() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
+    
   }
 
   @override

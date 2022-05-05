@@ -3,9 +3,9 @@ import 'package:kantin/models/product_model.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/currency_format.dart';
 
-class ProdukSearchCard extends StatelessWidget {
-  final ProductModel search;
-  ProdukSearchCard(this.search);
+class ProdukCategoryCard extends StatelessWidget {
+  final ProductModel product;
+  ProdukCategoryCard(this.product);
 
   String BaseUrl = 'http://103.183.75.223';
 
@@ -14,6 +14,8 @@ class ProdukSearchCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(
         top: defaultMargin,
+        left: defaultMargin,
+        right: defaultMargin,
       ),
       padding: EdgeInsets.symmetric(
         horizontal: 12,
@@ -34,7 +36,7 @@ class ProdukSearchCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.network(
-                  BaseUrl + search.galleries[0].url,
+                  BaseUrl + product.galleries[0].url,
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
@@ -48,7 +50,7 @@ class ProdukSearchCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      search.name,
+                      product.name,
                       style: blackTextStyle.copyWith(
                         fontWeight: bold,
                         fontSize: 16,
@@ -58,7 +60,7 @@ class ProdukSearchCard extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      CurrencyFormat.convertToIdr(search.price, 0),
+                      CurrencyFormat.convertToIdr(product.price, 0),
                       style: priceTextStyle.copyWith(
                         fontSize: 14,
                       ),

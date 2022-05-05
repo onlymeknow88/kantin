@@ -3,9 +3,9 @@ import 'package:kantin/models/product_model.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/currency_format.dart';
 
-class ProdukSearchCard extends StatelessWidget {
+class SearchCard extends StatelessWidget {
   final ProductModel search;
-  ProdukSearchCard(this.search);
+  SearchCard(this.search);
 
   String BaseUrl = 'http://103.183.75.223';
 
@@ -14,6 +14,8 @@ class ProdukSearchCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(
         top: defaultMargin,
+        left: defaultMargin,
+        right: defaultMargin,
       ),
       padding: EdgeInsets.symmetric(
         horizontal: 12,

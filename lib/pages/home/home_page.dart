@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kantin/pages/cart_page.dart';
 import 'package:kantin/pages/search_page.dart';
 import 'package:kantin/providers/cart_provider.dart';
+import 'package:kantin/providers/category_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:kantin/widgets/category_item.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:kantin/widgets/produk_card.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +13,10 @@ import 'package:provider/provider.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    ProductProvider productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
 
     Widget searchInput() {
       return Container(
@@ -121,119 +126,11 @@ class HomePage extends StatelessWidget {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: [
-              SizedBox(
-                width: defaultMargin,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: blueColor,
-                ),
-                child: Text(
-                  'All',
-                  style: whiteTextStyle.copyWith(
-                    fontSize: 14,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: lightGrayColor,
-                ),
-                child: Text(
-                  'Nasi',
-                  style: blackTextStyle.copyWith(
-                    fontSize: 14,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: lightGrayColor,
-                ),
-                child: Text(
-                  'Mie Ayam',
-                  style: blackTextStyle.copyWith(
-                    fontSize: 14,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: lightGrayColor,
-                ),
-                child: Text(
-                  'Minuman',
-                  style: blackTextStyle.copyWith(
-                    fontSize: 14,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: lightGrayColor,
-                ),
-                child: Text(
-                  'Bakso',
-                  style: blackTextStyle.copyWith(
-                    fontSize: 14,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: lightGrayColor,
-                ),
-                child: Text(
-                  'Gorengan',
-                  style: blackTextStyle.copyWith(
-                    fontSize: 14,
-                    fontWeight: medium,
-                  ),
-                ),
-              ),
-            ],
+            children: categoryProvider.category
+                .map(
+                  (category) => CategoryItem(category),
+                )
+                .toList(),
           ),
         ),
       );
