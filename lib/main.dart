@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:kantin/pages/add_produk.dart';
+import 'package:kantin/pages/admin/add_product.dart';
 import 'package:kantin/pages/cart_page.dart';
 import 'package:kantin/pages/category_feed.dart';
 import 'package:kantin/pages/checkout_page.dart';
@@ -62,6 +62,8 @@ class MyApp extends StatelessWidget {
           '/edit-profile': (context) => EdtiProfilePage(),
           '/cart': (context) => CartPage(),
           '/order': (context) => OrderListPage(),
+          // '/edit_product': (context) => EditProdukPage(),
+          // '/order-list': (context) => OrderDetailPage(),
           '/search': (context) => SearchPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),

@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/models/user_model.dart';
-import 'package:kantin/pages/add_produk.dart';
+import 'package:kantin/pages/admin/add_product.dart';
+import 'package:kantin/pages/admin/list_product.dart';
 import 'package:kantin/pages/edit_profile.dart';
 // import 'package:kantin/pages/home/home_page.dart';
 import 'package:kantin/pages/home/order_list_page.dart';
 import 'package:kantin/pages/sign_in_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:provider/provider.dart';
 
-class AkunPage extends StatelessWidget {
+class AkunPage extends StatefulWidget {
+  @override
+  State<AkunPage> createState() => _AkunPageState();
+}
+
+class _AkunPageState extends State<AkunPage> {
+  void initState() {
+    // TODO: implement initState
+    getProduct();
+    super.initState();
+  }
+
+  getProduct() async {
+    await Provider.of<ProductProvider>(context, listen: false).getProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     UserModel user = authProvider.user;
 
@@ -76,16 +94,6 @@ class AkunPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                // GestureDetector(
-                //   onTap: () {
-                //     Navigator.pushNamedAndRemoveUntil(
-                //         context, '/sign-in', (route) => false);
-                //   },
-                //   child: Image.asset(
-                //     'assets/button_exit.png',
-                //     width: 20,
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -148,8 +156,10 @@ class AkunPage extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   // Navigator.pushNamed(context, '/edit-profile');
+
+                  productProvider.getProducts();
                   Navigator.of(context)
-                      .push(CustomPageRoute(child: AddProdukPage()));
+                      .push(CustomPageRoute(child: ListPorductPage()));
                 },
                 child: menuItem(
                   'Add Product',

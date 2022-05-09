@@ -24,18 +24,32 @@ class _OrdersCardState extends State<OrdersCard> {
         DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID').format(date);
 
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    Provider.of<TransactionProvider>(context, listen: false)
-        .getTransactions(authProvider.user.token);
+
+    selectOrder() async {
+      await Provider.of<TransactionProvider>(context, listen: false)
+          .getTransactions(authProvider.user.token);
+      setState(() {
+        // Navigator.of(context)
+        //     .pushNamed('/order-list', arguments: widget.transaction.id);
+        Navigator.of(context).push(
+          CustomPageRoute(
+            child: OrderDetailPage(widget.transaction),
+          ),
+        );
+      });
+    }
+
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          Navigator.of(context).push(
-            CustomPageRoute(
-              child: OrderDetailPage(widget.transaction),
-            ),
-          );
-        });
-      },
+      // onTap: () {
+      //   setState(() {
+      //     Navigator.of(context).push(
+      //       CustomPageRoute(
+      //         child: OrderDetailPage(widget.transaction),
+      //       ),
+      //     );
+      //   });
+      // },
+      onTap: () => selectOrder(),
       child: Container(
         margin: EdgeInsets.only(
           top: defaultMargin,

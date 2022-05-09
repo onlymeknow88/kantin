@@ -6,7 +6,7 @@ class CategoryService {
   String baseUrl = 'http://103.183.75.223/api';
 
   Future<List<CategoryModel>> getCategories() async {
-    var url = '$baseUrl/categories';
+    var url = Uri.parse('$baseUrl/categories');
     var response = await http.get(url);
 
     if (response.statusCode == 200) {

@@ -13,7 +13,7 @@ class AuthService {
     String email,
     String password,
   }) async {
-    var url = '$baseUrl/register';
+    var url = Uri.parse('$baseUrl/register');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({
       'name': name,
@@ -46,7 +46,7 @@ class AuthService {
     String password,
   }) async {
     final pref = await SharedPreferences.getInstance();
-    var url = '$baseUrl/login';
+    var url = Uri.parse('$baseUrl/login');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({
       'email': email,
@@ -77,7 +77,7 @@ class AuthService {
   Future<UserModel> logout({
     String token,
   }) async {
-    var url = '$baseUrl/logout';
+    var url = Uri.parse('$baseUrl/logout');
     var headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -105,7 +105,7 @@ class AuthService {
     String email,
     String password,
   }) async {
-    var url = '$baseUrl/login';
+    var url = Uri.parse('$baseUrl/login');
     var headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

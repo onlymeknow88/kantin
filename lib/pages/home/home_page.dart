@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:kantin/pages/cart_page.dart';
-import 'package:kantin/pages/search_page.dart';
-import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/providers/category_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/category_item.dart';
-import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:kantin/widgets/produk_card.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider =
@@ -45,8 +46,6 @@ class HomePage extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, '/search');
-                        // Navigator.of(context)
-                        //     .push(CustomPageRoute(child: SearchPage()));
                       },
                       child: Image.asset(
                         'assets/icon_search.png',
@@ -166,14 +165,22 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    return ListView(
-      children: [
-        searchInput(),
-        diskonCard(),
-        Categories(),
-        recomendedTitle(),
-        recomendedProduk(),
-      ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+          productProvider.getProducts();
+          categoryProvider.getCategory();
+        });
+      },
+      child: ListView(
+        children: [
+          searchInput(),
+          diskonCard(),
+          Categories(),
+          recomendedTitle(),
+          recomendedProduk(),
+        ],
+      ),
     );
   }
 }

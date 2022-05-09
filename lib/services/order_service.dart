@@ -6,7 +6,7 @@ class OrderService {
   String baseUrl = 'http://103.183.75.223/api';
 
   Future<List<CartModel>> getDetailTransactions(String token) async {
-    var url = '$baseUrl/transactions';
+    var url = Uri.parse('$baseUrl/transactions');
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': token,

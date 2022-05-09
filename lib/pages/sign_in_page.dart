@@ -12,11 +12,9 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailController =
-      TextEditingController(text: 'tes@email.com');
+  TextEditingController emailController = TextEditingController(text: '');
 
-  TextEditingController passwordController =
-      TextEditingController(text: 'qwertyui');
+  TextEditingController passwordController = TextEditingController(text: '');
 
   bool isLoading = false;
 

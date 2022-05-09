@@ -54,6 +54,7 @@ class _SearchPageState extends State<SearchPage> {
               onChanged: (value) {
                 searchProduct(value);
               },
+              autofocus: true,
               controller: searchController,
               showCursor: true,
               readOnly: false,
@@ -86,7 +87,7 @@ class _SearchPageState extends State<SearchPage> {
           horizontal: defaultMargin,
         ),
         child: searchController.text.isEmpty
-            ? Center(child: Text('Pencarian Produk kosong!'))
+            ? Center(child: Text('Pencarian Produk!'))
             : ListView(
                 children: productProvider.productSearch
                     .map(

@@ -10,6 +10,7 @@ import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/cart_detail.dart';
 import 'package:kantin/widgets/currency_format.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
+import 'package:kantin/widgets/detail_user_order_card.dart';
 import 'package:kantin/widgets/nota_card.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
@@ -25,10 +26,6 @@ class OrderDetailPage extends StatefulWidget {
 class _OrderDetailPageState extends State<OrderDetailPage> {
   @override
   Widget build(BuildContext context) {
-    DateTime date = widget.transaction.createdAt;
-    String dateString =
-        DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID').format(date);
-
     TransactionProvider transactionProvider =
         Provider.of<TransactionProvider>(context);
 
@@ -39,6 +36,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         widget.transaction.id);
 
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+    DateTime date = widget.transaction.createdAt;
+    String dateString =
+        DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID').format(date);
 
     cancelOrder() async {
       if (await transactionProvider.cancelOrder(
@@ -89,37 +89,37 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       );
     }
 
-    Widget headerNota() {
-      return AppBar(
-        backgroundColor: whiteColor,
-        automaticallyImplyLeading: false,
-        elevation: 0.5,
-        leading: IconButton(
-          icon: Icon(
-            Icons.close,
-            color: blackColor,
-            size: 24,
-          ),
-          onPressed: () {
-            Navigator.pop(context, true);
-          },
-        ),
-        title: Text(
-          'Nota',
-          style: TextStyle(
-            color: blackColor,
-            fontSize: 18,
-            fontWeight: bold,
-          ),
-        ),
-        iconTheme: IconThemeData(
-          color: blackColor,
-        ),
-      );
-    }
+    // Widget headerNota() {
+    //   return AppBar(
+    //     backgroundColor: whiteColor,
+    //     automaticallyImplyLeading: false,
+    //     elevation: 0.5,
+    //     leading: IconButton(
+    //       icon: Icon(
+    //         Icons.close,
+    //         color: blackColor,
+    //         size: 24,
+    //       ),
+    //       onPressed: () {
+    //         Navigator.pop(context, true);
+    //       },
+    //     ),
+    //     title: Text(
+    //       'Nota',
+    //       style: TextStyle(
+    //         color: blackColor,
+    //         fontSize: 18,
+    //         fontWeight: bold,
+    //       ),
+    //     ),
+    //     iconTheme: IconThemeData(
+    //       color: blackColor,
+    //     ),
+    //   );
+    // }
 
-    Future<bool> showModal() {
-      return showModalBottomSheet(
+    showModalItem() {
+      showModalBottomSheet(
           context: context,
           builder: (context) {
             return Wrap(
@@ -163,205 +163,205 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           });
     }
 
-    Future<bool> notaDetail() {
-      return showGeneralDialog(
-        context: context,
-        barrierColor: whiteColor.withOpacity(0.1),
-        barrierDismissible: false,
-        transitionDuration: Duration(milliseconds: 300),
-        transitionBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1, 0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          );
-        },
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return SafeArea(
-            child: Scaffold(
-              backgroundColor: whiteColor,
-              appBar: headerNota(),
-              body: SingleChildScrollView(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  margin: EdgeInsets.only(
-                    top: 36,
-                    left: defaultMargin,
-                    right: defaultMargin,
-                  ),
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Text(
-                          'Kantin Online',
-                          style: blackTextStyle.copyWith(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Center(
-                        child: Text(
-                          'Alamat: Jl. Milenium Satu Arah No.01 RT.01',
-                          style: blackTextStyle.copyWith(
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          'Kalimantan Timunr, Balikpapan 76123',
-                          style: blackTextStyle.copyWith(
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Center(
-                        child: Text(
-                          '${authProvider.user.name} : ${dateString}',
-                          style: blackTextStyle.copyWith(
-                            fontSize: 14,
-                            fontWeight: bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        child: Center(
-                          child: Text(
-                              '=============================================='),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        height: 200,
-                        child: SfBarcodeGenerator(
-                          value: widget.transaction.id.toString(),
-                          symbology: QRCode(),
-                          showValue: false,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Center(
-                        child: Text(
-                          'ORDER ID: ${widget.transaction.id}',
-                          style: blackTextStyle.copyWith(
-                            fontSize: 24,
-                            fontWeight: bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Produk',
-                              style: blackTextStyle.copyWith(
-                                fontSize: 16,
-                                fontWeight: bold,
-                              )),
-                          Text('Harga',
-                              style: blackTextStyle.copyWith(
-                                fontSize: 16,
-                                fontWeight: bold,
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: transactionProvider.itemdetails
-                            .map(
-                              (itemdetail) => NotaCard(itemdetail),
-                            )
-                            .toList(),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        child: Center(
-                          child: Text(
-                              '============================================'),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'SubTotal:',
-                              style: blackTextStyle.copyWith(
-                                fontSize: 16,
-                                fontWeight: bold,
-                              ),
-                            ),
-                            Text(
-                              CurrencyFormat.convertToIdr(
-                                  widget.transaction.subTotalItem, 0),
-                              style: blackTextStyle.copyWith(
-                                fontSize: 16,
-                                fontWeight: bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Total Harga + PPN (20%):',
-                              style: blackTextStyle.copyWith(
-                                fontSize: 16,
-                                fontWeight: bold,
-                              ),
-                            ),
-                            Text(
-                              CurrencyFormat.convertToIdr(
-                                  widget.transaction.totalPrice, 0),
-                              style: blackTextStyle.copyWith(
-                                fontSize: 16,
-                                fontWeight: bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
+    // Future<bool> notaDetail() {
+    //   return showGeneralDialog(
+    //     context: context,
+    //     barrierColor: whiteColor.withOpacity(0.1),
+    //     barrierDismissible: false,
+    //     transitionDuration: Duration(milliseconds: 300),
+    //     transitionBuilder: (context, animation, secondaryAnimation, child) {
+    //       return SlideTransition(
+    //         position: Tween<Offset>(
+    //           begin: const Offset(1, 0),
+    //           end: Offset.zero,
+    //         ).animate(animation),
+    //         child: child,
+    //       );
+    //     },
+    //     pageBuilder: (context, animation, secondaryAnimation) {
+    //       return SafeArea(
+    //         child: Scaffold(
+    //           backgroundColor: whiteColor,
+    //           appBar: headerNota(),
+    //           body: SingleChildScrollView(
+    //             child: Container(
+    //               width: MediaQuery.of(context).size.width,
+    //               height: MediaQuery.of(context).size.height,
+    //               margin: EdgeInsets.only(
+    //                 top: 36,
+    //                 left: defaultMargin,
+    //                 right: defaultMargin,
+    //               ),
+    //               child: Column(
+    //                 children: [
+    //                   Center(
+    //                     child: Text(
+    //                       'Kantin Online',
+    //                       style: blackTextStyle.copyWith(
+    //                         fontSize: 16,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 4,
+    //                   ),
+    //                   Center(
+    //                     child: Text(
+    //                       'Alamat: Jl. Milenium Satu Arah No.01 RT.01',
+    //                       style: blackTextStyle.copyWith(
+    //                         fontSize: 12,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   Center(
+    //                     child: Text(
+    //                       'Kalimantan Timunr, Balikpapan 76123',
+    //                       style: blackTextStyle.copyWith(
+    //                         fontSize: 12,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Center(
+    //                     child: Text(
+    //                       '${authProvider.user.name} : ${dateString}',
+    //                       style: blackTextStyle.copyWith(
+    //                         fontSize: 14,
+    //                         fontWeight: bold,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Container(
+    //                     child: Center(
+    //                       child: Text(
+    //                           '=============================================='),
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Container(
+    //                     height: 200,
+    //                     child: SfBarcodeGenerator(
+    //                       value: widget.transaction.id.toString(),
+    //                       symbology: QRCode(),
+    //                       showValue: false,
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Center(
+    //                     child: Text(
+    //                       'ORDER ID: ${widget.transaction.id}',
+    //                       style: blackTextStyle.copyWith(
+    //                         fontSize: 24,
+    //                         fontWeight: bold,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                     children: [
+    //                       Text('Produk',
+    //                           style: blackTextStyle.copyWith(
+    //                             fontSize: 16,
+    //                             fontWeight: bold,
+    //                           )),
+    //                       Text('Harga',
+    //                           style: blackTextStyle.copyWith(
+    //                             fontSize: 16,
+    //                             fontWeight: bold,
+    //                           )),
+    //                     ],
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Column(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //                     children: transactionProvider.itemdetails
+    //                         .map(
+    //                           (itemdetail) => NotaCard(itemdetail),
+    //                         )
+    //                         .toList(),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Container(
+    //                     child: Center(
+    //                       child: Text(
+    //                           '============================================'),
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Container(
+    //                     child: Row(
+    //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                       children: [
+    //                         Text(
+    //                           'SubTotal:',
+    //                           style: blackTextStyle.copyWith(
+    //                             fontSize: 16,
+    //                             fontWeight: bold,
+    //                           ),
+    //                         ),
+    //                         Text(
+    //                           CurrencyFormat.convertToIdr(
+    //                               widget.transaction.subTotalItem, 0),
+    //                           style: blackTextStyle.copyWith(
+    //                             fontSize: 16,
+    //                             fontWeight: bold,
+    //                           ),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ),
+    //                   SizedBox(
+    //                     height: 16,
+    //                   ),
+    //                   Container(
+    //                     child: Row(
+    //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                       children: [
+    //                         Text(
+    //                           'Total Harga + PPN (20%):',
+    //                           style: blackTextStyle.copyWith(
+    //                             fontSize: 16,
+    //                             fontWeight: bold,
+    //                           ),
+    //                         ),
+    //                         Text(
+    //                           CurrencyFormat.convertToIdr(
+    //                               widget.transaction.totalPrice, 0),
+    //                           style: blackTextStyle.copyWith(
+    //                             fontSize: 16,
+    //                             fontWeight: bold,
+    //                           ),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       );
+    //     },
+    //   );
+    // }
 
     Widget header() {
       return AppBar(
@@ -406,7 +406,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               ];
             },
             onSelected: (value) {
-              notaDetail();
+              // notaDetail();
             },
           ),
         ],
@@ -436,6 +436,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     Text(
                       widget.transaction.status,
+                      // 'Pending',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: semiBold,
@@ -532,34 +533,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       fontWeight: bold,
                     ),
                   ),
-                  // Container(
-                  //   child: GestureDetector(
-                  //     onTap: () {
-                  //       setState(() {
-                  //         showModal();
-                  //       });
-                  //     },
-                  //     child: Text(
-                  //       'Detail',
-                  //       style: primaryTextStyle.copyWith(
-                  //         fontSize: 14,
-                  //         fontWeight: bold,
-                  //         decoration: TextDecoration.underline,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
               SizedBox(
                 height: 16,
               ),
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    showModal();
-                  });
-                },
+                onTap: showModalItem,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -570,6 +550,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: Text(
                             '${widget.transaction.items.length} item${widget.transaction.items.length > 1 ? 's' : ''}',
+                            // '1 item',
                             style: primaryTextStyle.copyWith(
                               fontSize: 14,
                               fontWeight: bold,
@@ -580,6 +561,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         Text(
                           CurrencyFormat.convertToIdr(
                               widget.transaction.subTotalItem, 0),
+                          // 'Rp16.000',
                           style: primaryTextStyle.copyWith(
                             fontSize: 14,
                             fontWeight: bold,
@@ -621,6 +603,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     Text(
                       widget.transaction.payment,
+                      // 'Cash',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -636,6 +619,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   children: [
                     Text(
                       'Subtotal (${widget.transaction.items.length} item${widget.transaction.items.length > 1 ? 's' : ''})',
+                      // 'Subtotal (1 item)',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
                       ),
@@ -643,6 +627,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     Text(
                       CurrencyFormat.convertToIdr(
                           widget.transaction.subTotalItem, 0),
+                      // 'Rp16.000',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -671,6 +656,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     Text(
                       CurrencyFormat.convertToIdr(
                           widget.transaction.totalPrice, 0),
+                      // 'Rp16.000',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
@@ -724,51 +710,4 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       // bottomNavigationBar: customBottomNav(),
     );
   }
-}
-
-_displayDialog(BuildContext context) {
-  showGeneralDialog(
-    context: context,
-    barrierDismissible: false,
-    transitionDuration: Duration(milliseconds: 300),
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      return SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(1, 0),
-          end: Offset.zero,
-        ).animate(animation),
-        child: child,
-      );
-    },
-    pageBuilder: (context, animation, secondaryAnimation) {
-      return SafeArea(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.all(20),
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'Hai This Is Full Screen Dialog',
-                  style: TextStyle(color: Colors.red, fontSize: 20.0),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "DISMISS",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
 }

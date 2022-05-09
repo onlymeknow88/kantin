@@ -1,8 +1,47 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:kantin/models/product_model.dart';
 import 'package:kantin/services/product_service.dart';
 
 class ProductProvider with ChangeNotifier {
+  ProductModel _addProduct;
+
+  ProductModel get addProduct => _addProduct;
+
+  set addProduct(ProductModel addProduct) {
+    _addProduct = addProduct;
+    notifyListeners();
+  }
+
+  Future<bool> addProducts(String name, String price, String tags,
+      String categoryId, String files) async {
+    try {
+      if (await ProductService()
+          .addProducts(name, price, tags, categoryId, files)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteProducts(int id) async {
+    try {
+      if (await ProductService().deleteProducts(id)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   List<ProductModel> _products = [];
 
   List<ProductModel> get products => _products;
