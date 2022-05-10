@@ -1,10 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kantin/models/transaction_model.dart';
+import 'package:kantin/pages/home/main_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
+import 'package:kantin/providers/page_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/currency_format.dart';
+import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:kantin/widgets/list_item_card.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +25,59 @@ class NewOrderDetail extends StatelessWidget {
         Provider.of<TransactionProvider>(context);
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
+
     transactionProvider.getDetailItem(authProvider.user.token, transaction.id);
+
+    confirmOrder() async {
+      if (await transactionProvider.confirmOrder(
+          authProvider.user.token, transaction.id)) {
+        await transactionProvider.getTransactions(authProvider.user.token);
+        Navigator.of(context).pushAndRemoveUntil(
+          CustomPageRoute(
+            child: MainPage(),
+          ),
+          (route) => false,
+        );
+        pageProvider.changePage(2);
+      }
+    }
+
+    Future<bool> showDialogConfirm() {
+      return showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            content:
+                Text('Apakah anda yakin ingin mengkonfirmasi pesanan ini?'),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'Tidak',
+                  style: blackTextStyle.copyWith(
+                    fontSize: 14,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Ya',
+                  style: primaryTextStyle.copyWith(
+                    fontWeight: bold,
+                  ),
+                ),
+                onPressed: () {
+                  confirmOrder();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     Widget header() {
       return AppBar(
@@ -135,7 +191,7 @@ class NewOrderDetail extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Pesanan Anda',
+                    'Pesanan',
                     style: blackTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: bold,
@@ -259,7 +315,7 @@ class NewOrderDetail extends StatelessWidget {
               right: 200,
             ),
             child: TextButton(
-              onPressed: () {},
+              onPressed: showDialogConfirm,
               child: Text(
                 'Konfirmasi Pesanan',
                 style: primaryTextStyle.copyWith(

@@ -41,11 +41,43 @@ class TransactionProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> confirmOrder(String token, int id) async {
+    try {
+      if (await TransactionService().confirmOrder(token, id)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<bool> getTransactions(String token) async {
     try {
       List<TransactionModel> transactions =
           await TransactionService().getTransactions(token);
       _transactions = transactions;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  List<TransactionModel> _transactionsbyid = [];
+
+  List<TransactionModel> get transactionbyid => _transactionsbyid;
+
+  set transactionbyid(List<TransactionModel> transactionbyid) {
+    _transactionsbyid = transactionbyid;
+    notifyListeners();
+  }
+
+  Future<bool> getTransactionsbyId(String token, int id) async {
+    try {
+      List<TransactionModel> transactionsbyid =
+          await TransactionService().getTransactionsById(token, id);
+      _transactionsbyid = transactionsbyid;
     } catch (e) {
       print(e);
     }

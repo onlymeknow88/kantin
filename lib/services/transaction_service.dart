@@ -71,6 +71,37 @@ class TransactionService {
     }
   }
 
+  Future<List<TransactionModel>> getTransactionsById(
+      String token, int id) async {
+    var url = Uri.parse('$baseUrl/transactions');
+    url = url
+        .replace(queryParameters: {'status': 'PENDING', 'id': id.toString()});
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': token,
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data']['data'];
+
+      List<TransactionModel> transactions = [];
+
+      for (var item in data) {
+        var transaction = TransactionModel.fromJson(item);
+        transactions.add(transaction);
+      }
+
+      return transactions;
+    } else {
+      throw Exception('Gagal Get Transactions!');
+    }
+  }
+
   Future<List<TransactionModel>> getTransactionsByStatus(String token) async {
     var url = Uri.parse('$baseUrl/transactions-status');
     url = url.replace(queryParameters: {'status': 'PENDING'});
@@ -142,6 +173,34 @@ class TransactionService {
     var body = jsonEncode(
       {
         'status': 'CANCELLED',
+      },
+    );
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Gagal Melakukan Cancel Order!');
+    }
+  }
+
+  Future<bool> confirmOrder(String token, int id) async {
+    var url = Uri.parse('$baseUrl/cancel-order');
+    url = url.replace(queryParameters: {'id': id.toString()});
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': token,
+    };
+    var body = jsonEncode(
+      {
+        'status': 'SUCCESS',
       },
     );
 

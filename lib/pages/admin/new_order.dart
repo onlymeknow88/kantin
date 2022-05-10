@@ -50,15 +50,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
         margin: EdgeInsets.symmetric(
           horizontal: defaultMargin,
         ),
-        // child: ListView.builder(
-        //   itemCount: transactionProvider.transactionbystatus.length,
-        //   itemBuilder: (context, index) {
-        //     return NewOrderCard(
-        //       transactionProvider.transactionbystatus[index],
-        //     );
-        //   },
-        // ),
-
         child: ListView(
           children: transactionProvider.transactionbystatus
               .map(
