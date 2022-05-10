@@ -24,13 +24,11 @@ class _ProductListCardState extends State<ProductListCard> {
 
   Future<void> getProduct() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
-    setState(() {});
   }
 
   Future<void> deleteProduct() async {
     await Provider.of<ProductProvider>(context, listen: false)
         .deleteProducts(widget.product.id);
-    setState(() {});
     Navigator.of(context).pop();
   }
 

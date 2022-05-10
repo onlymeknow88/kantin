@@ -67,6 +67,7 @@ class AuthService {
       pref.setString('token', user.token);
       pref.setString('email', user.email);
       pref.setString('password', password);
+      pref.setString('roles', user.roles);
 
       return user;
     } else {
@@ -126,7 +127,8 @@ class AuthService {
       var data = jsonDecode(response.body)['data'];
       UserModel user = UserModel.fromJson(data['user']);
       user.token = 'Bearer ' + data['access_token'];
-      user.roles = data['roles'];
+      
+      // user.roles = user.roles;
 
       return user;
     } else {
@@ -134,31 +136,30 @@ class AuthService {
     }
   }
 
-  Future<UserModel> getUser({
-    String token,
-  }) async {
-    var url = Uri.parse('$baseUrl/user');
-    var headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': token,
-    };
+  // Future<UserModel> getUser({
+  //   String token,
+  // }) async {
+  //   var url = Uri.parse('$baseUrl/user');
+  //   var headers = {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': token,
+  //   };
 
-    var response = await http.get(
-      url,
-      headers: headers,
-    );
+  //   var response = await http.get(
+  //     url,
+  //     headers: headers,
+  //   );
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body)['data'];
+  //   if (response.statusCode == 200) {
+  //     var data = jsonDecode(response.body)['data'];
 
-      print(data);
-      UserModel user = UserModel.fromJson(data['user']);
-      user.roles = data['roles'];
+  //     UserModel user = UserModel.fromJson(data['user']);
+  //     user.roles = data['roles'];
 
-      return user;
-    } else {
-      throw Exception('Get User');
-    }
-  }
+  //     return user;
+  //   } else {
+  //     throw Exception('Get User');
+  //   }
+  // }
 }

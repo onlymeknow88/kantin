@@ -128,19 +128,19 @@ class AuthProvider with ChangeNotifier {
   //   }
   // }
 
-  Future<UserModel> getUser({
-    String token,
-  }) async {
-    try {
-      UserModel user = await AuthService().getUser(
-        token: token,
-      );
+  // Future<UserModel> getUser({
+  //   String token,
+  // }) async {
+  //   try {
+  //     UserModel user = await AuthService().getUser(
+  //       token: token,
+  //     );
 
-      _user = user;
-      return user;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
+  //     _user = user;
+  //     return user;
+  //   } catch (e) {
+  //     print(e);
+  //     return null;
+  //   }
+  // }
 }

@@ -176,45 +176,42 @@ class _AkunPageState extends State<AkunPage> {
               SizedBox(
                 height: 20,
               ),
-              makeVisible
-                  ? Text(
-                      'Admin Toko',
-                      style: blackTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
-                      ),
-                    )
-                  : SizedBox(
-                      height: defaultMargin,
-                    ),
-              user.roles == 'ADMIN'
-                  ? GestureDetector(
-                      onTap: () {
-                        productProvider.getProducts();
-                        Navigator.of(context)
-                            .push(CustomPageRoute(child: ListPorductPage()));
-                      },
-                      child: menuItem(
-                        'Add Product',
-                      ),
-                    )
-                  : SizedBox(
-                      height: defaultMargin,
-                    ),
-              makeVisible
-                  ? GestureDetector(
-                      onTap: () {
-                        productProvider.getProducts();
-                        Navigator.of(context)
-                            .push(CustomPageRoute(child: NewOrderPage()));
-                      },
-                      child: menuItem(
-                        'New Order',
-                      ),
-                    )
-                  : SizedBox(
-                      height: defaultMargin,
-                    ),
+              Visibility(
+                visible: makeVisible,
+                child: Text(
+                  'Admin',
+                  style: blackTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: semiBold,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: makeVisible,
+                child: GestureDetector(
+                  onTap: () {
+                    productProvider.getProducts();
+                    Navigator.of(context)
+                        .push(CustomPageRoute(child: ListPorductPage()));
+                  },
+                  child: menuItem(
+                    'Add Product',
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: makeVisible,
+                child: GestureDetector(
+                  onTap: () {
+                    productProvider.getProducts();
+                    Navigator.of(context)
+                        .push(CustomPageRoute(child: NewOrderPage()));
+                  },
+                  child: menuItem(
+                    'New Order',
+                  ),
+                ),
+              ),
             ],
           ),
         ),

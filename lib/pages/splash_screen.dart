@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kantin/models/user_model.dart';
+import 'package:kantin/pages/admin/home_admin.dart';
 import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/pages/home/main_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
@@ -26,10 +28,12 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     String token = prefs.getString('token');
     String email = prefs.getString('email');
     String password = prefs.getString('password');
+    String roles = prefs.getString('roles');
 
     if (token != null) {
       AuthProvider authProvider =
           Provider.of<AuthProvider>(context, listen: false);
+
       if (await authProvider.autologin(
         token: token,
         email: email,
@@ -45,8 +49,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             .getTransactionsByStatus(token);
         await Provider.of<TransactionProvider>(context, listen: false)
             .getHistoryOrder(token);
-        await Provider.of<AuthProvider>(context, listen: false)
-            .getUser(token: token);
 
         Navigator.pushAndRemoveUntil(
           context,
@@ -76,10 +78,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       );
     }
   }
-
-  // getInit() async {
-  //   await Provider.of<ProductProvider>(context, listen: false).getProducts();
-  // }
 
   @override
   Widget build(BuildContext context) {
