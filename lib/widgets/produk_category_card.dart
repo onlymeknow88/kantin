@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/models/product_model.dart';
+import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/currency_format.dart';
+import 'package:provider/provider.dart';
 
 class ProdukCategoryCard extends StatelessWidget {
   final ProductModel product;
@@ -11,6 +13,8 @@ class ProdukCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+
     return Container(
       margin: EdgeInsets.only(
         top: defaultMargin,
@@ -78,7 +82,10 @@ class ProdukCategoryCard extends StatelessWidget {
                       color: whiteColor,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    cartProvider.addCart(product);
+                    Navigator.pushNamed(context, '/cart');
+                  },
                   style: ElevatedButton.styleFrom(
                     elevation: 0.0,
                     primary: blueColor,

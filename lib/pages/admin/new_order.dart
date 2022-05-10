@@ -4,6 +4,7 @@ import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/new_order_card.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewOrderPage extends StatefulWidget {
   @override
@@ -11,6 +12,21 @@ class NewOrderPage extends StatefulWidget {
 }
 
 class _NewOrderPageState extends State<NewOrderPage> {
+  void initState() {
+    // TODO: implement initState
+    getTransactionByStatus();
+    super.initState();
+  }
+
+  Future<void> getTransactionByStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+
+    await Provider.of<TransactionProvider>(context, listen: false)
+        .getTransactionsByStatus(token);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     TransactionProvider transactionProvider =
@@ -46,16 +62,19 @@ class _NewOrderPageState extends State<NewOrderPage> {
     }
 
     Widget content() {
-      return Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-        ),
-        child: ListView(
-          children: transactionProvider.transactionbystatus
-              .map(
-                (transaction) => NewOrderCard(transaction),
-              )
-              .toList(),
+      return RefreshIndicator(
+        onRefresh: getTransactionByStatus,
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: defaultMargin,
+          ),
+          child: ListView(
+            children: transactionProvider.transactionbystatus
+                .map(
+                  (transaction) => NewOrderCard(transaction),
+                )
+                .toList(),
+          ),
         ),
       );
     }

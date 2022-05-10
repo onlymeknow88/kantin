@@ -3,9 +3,30 @@ import 'package:intl/intl.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
+import 'package:kantin/widgets/currency_format.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HistoryOrderPage extends StatelessWidget {
+class HistoryOrderPage extends StatefulWidget {
+  @override
+  State<HistoryOrderPage> createState() => _HistoryOrderPageState();
+}
+
+class _HistoryOrderPageState extends State<HistoryOrderPage> {
+  void initState() {
+    // TODO: implement initState
+    getHistories();
+    super.initState();
+  }
+
+  Future<void> getHistories() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+    await Provider.of<TransactionProvider>(context, listen: false)
+        .getHistoryOrder(token);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     TransactionProvider transactionProvider =
@@ -44,37 +65,41 @@ class HistoryOrderPage extends StatelessWidget {
     }
 
     Widget content() {
-      return Container(
-        padding: EdgeInsets.all(defaultMargin),
-        child: ListView.builder(
-          itemCount: transactionProvider.histories.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                transactionProvider.histories[index].status,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID')
-                    .format(transactionProvider.histories[index].createdAt),
-                style: TextStyle(fontSize: 12),
-              ),
-              trailing: Text(
-                'Rp. ${transactionProvider.histories[index].totalPrice}',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => OrderListPage(
-                //       transaction: transactionProvider.histories[index],
-                //     ),
-                //   ),
-                // );
-              },
-            );
-          },
+      return RefreshIndicator(
+        onRefresh: getHistories,
+        child: Container(
+          padding: EdgeInsets.all(defaultMargin),
+          child: ListView.builder(
+            itemCount: transactionProvider.histories.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(
+                  transactionProvider.histories[index].status,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID')
+                      .format(transactionProvider.histories[index].createdAt),
+                  style: TextStyle(fontSize: 12),
+                ),
+                trailing: Text(
+                  CurrencyFormat.convertToIdr(
+                      transactionProvider.histories[index].totalPrice, 0),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => OrderListPage(
+                  //       transaction: transactionProvider.histories[index],
+                  //     ),
+                  //   ),
+                  // );
+                },
+              );
+            },
+          ),
         ),
       );
     }

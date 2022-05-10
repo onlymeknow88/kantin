@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/pages/home/main_page.dart';
+import 'package:kantin/pages/sign_in_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/category_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
@@ -26,7 +27,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     String token = prefs.getString('token');
     String email = prefs.getString('email');
     String password = prefs.getString('password');
-    String roles = prefs.getString('roles');
 
     if (token != null) {
       AuthProvider authProvider =

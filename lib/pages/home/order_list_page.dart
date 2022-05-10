@@ -48,16 +48,22 @@ class _OrderListPageState extends State<OrderListPage> {
     }
 
     Widget content() {
-      return Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
-        ),
-        child: ListView(
-          children: transactionProvider.transactions
-              .map(
-                (transaction) => OrdersCard(transaction),
-              )
-              .toList(),
+      return RefreshIndicator(
+        onRefresh: () async {
+          await transactionProvider.getTransactions(authProvider.user.token);
+          setState(() {});
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: defaultMargin,
+          ),
+          child: ListView(
+            children: transactionProvider.transactions
+                .map(
+                  (transaction) => OrdersCard(transaction),
+                )
+                .toList(),
+          ),
         ),
       );
     }

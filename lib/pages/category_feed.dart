@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kantin/models/product_model.dart';
+import 'package:kantin/providers/cart_provider.dart';
 import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/produk_category_card.dart';
@@ -18,8 +19,6 @@ class _CategoryFeedPageState extends State<CategoryFeedPage> {
   Widget build(BuildContext context) {
     final categoryName = ModalRoute.of(context).settings.arguments as String;
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
-
-    // productProvider.getProductsByCategory(categoryName);
 
     searchProduct(value) {
       if (value.isEmpty) {

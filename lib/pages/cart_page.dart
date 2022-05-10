@@ -26,7 +26,7 @@ class CartPage extends StatelessWidget {
           },
         ),
         title: Text(
-          'Orders',
+          'Kerangjang',
           style: TextStyle(
             color: blackColor,
             fontSize: 18,

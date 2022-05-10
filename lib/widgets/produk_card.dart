@@ -16,6 +16,7 @@ class ProdukCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
