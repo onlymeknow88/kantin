@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kantin/models/user_model.dart';
-import 'package:kantin/pages/admin/home_admin.dart';
 import 'package:kantin/pages/get_started.dart';
 import 'package:kantin/pages/home/main_page.dart';
 import 'package:kantin/providers/auth_provider.dart';
