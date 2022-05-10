@@ -30,7 +30,7 @@ class TransactionProvider with ChangeNotifier {
 
   Future<bool> cancelOrder(String token, int id) async {
     try {
-      if (await TransactionService().cancelOrder(token,id)) {
+      if (await TransactionService().cancelOrder(token, id)) {
         return true;
       } else {
         return false;
@@ -51,6 +51,25 @@ class TransactionProvider with ChangeNotifier {
     }
   }
 
+  List<TransactionModel> _transactionsbystatus = [];
+
+  List<TransactionModel> get transactionbystatus => _transactionsbystatus;
+
+  set transactionbystatus(List<TransactionModel> transactionbystatus) {
+    _transactionsbystatus = transactionbystatus;
+    notifyListeners();
+  }
+
+  Future<bool> getTransactionsByStatus(String token) async {
+    try {
+      List<TransactionModel> transactionbystatus =
+          await TransactionService().getTransactionsByStatus(token);
+      _transactionsbystatus = transactionbystatus;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   List<CartModel> _itemdetails = [];
 
   List<CartModel> get itemdetails => _itemdetails;
@@ -65,6 +84,25 @@ class TransactionProvider with ChangeNotifier {
       List<CartModel> itemdetails =
           await TransactionService().getDetailItem(token, id);
       _itemdetails = itemdetails;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  List<TransactionModel> _histories = [];
+
+  List<TransactionModel> get histories => _histories;
+
+  set histories(List<TransactionModel> histories) {
+    _histories = histories;
+    notifyListeners();
+  }
+
+  Future<bool> getHistoryOrder(String token) async {
+    try {
+      List<TransactionModel> histories =
+          await TransactionService().getHistoryOrder(token);
+      _histories = histories;
     } catch (e) {
       print(e);
     }

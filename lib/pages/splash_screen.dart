@@ -41,6 +41,12 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             .getTransactions(token);
         await Provider.of<CategoryProvider>(context, listen: false)
             .getCategory();
+        await Provider.of<TransactionProvider>(context, listen: false)
+            .getTransactionsByStatus(token);
+        await Provider.of<TransactionProvider>(context, listen: false)
+            .getHistoryOrder(token);
+        await Provider.of<AuthProvider>(context, listen: false)
+            .getUser(token: token);
 
         Navigator.pushAndRemoveUntil(
           context,

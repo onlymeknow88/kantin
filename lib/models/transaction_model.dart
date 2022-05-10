@@ -2,6 +2,7 @@ import 'package:kantin/models/cart_model.dart';
 
 class TransactionModel {
   int id;
+  int userId;
   String status;
   String payment;
   int totalPrice;
@@ -12,6 +13,7 @@ class TransactionModel {
 
   TransactionModel({
     this.id,
+    this.userId,
     this.status,
     this.payment,
     this.totalPrice,
@@ -23,6 +25,7 @@ class TransactionModel {
 
   TransactionModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    userId = json['users_id'];
     status = json['status'];
     payment = json['payment'];
     totalPrice = json['total_price'];
@@ -40,6 +43,7 @@ class TransactionModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'users_id': userId,
       'status': status,
       'payment': payment,
       'total_price': totalPrice,

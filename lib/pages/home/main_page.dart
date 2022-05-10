@@ -28,6 +28,12 @@ class _MainPageState extends State<MainPage> {
     await Provider.of<TransactionProvider>(context, listen: false)
         .getTransactions(
             Provider.of<AuthProvider>(context, listen: false).user.token);
+    await Provider.of<TransactionProvider>(context, listen: false)
+        .getTransactionsByStatus(
+            Provider.of<AuthProvider>(context, listen: false).user.token);
+    await Provider.of<TransactionProvider>(context, listen: false)
+        .getHistoryOrder(
+            Provider.of<AuthProvider>(context, listen: false).user.token);
   }
 
   @override

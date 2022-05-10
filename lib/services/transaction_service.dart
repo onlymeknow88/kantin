@@ -71,6 +71,34 @@ class TransactionService {
     }
   }
 
+  Future<List<TransactionModel>> getTransactionsByStatus(String token) async {
+    var url = Uri.parse('$baseUrl/transactions-status');
+    url = url.replace(queryParameters: {'status': 'PENDING'});
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': token,
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+
+      List<TransactionModel> transactionsbystatus = [];
+
+      for (var item in data) {
+        var transactionbystatus = TransactionModel.fromJson(item);
+        transactionsbystatus.add(transactionbystatus);
+      }
+
+      return transactionsbystatus;
+    } else {
+      throw Exception('Gagal Get Transactions!');
+    }
+  }
+
   Future<List<CartModel>> getDetailItem(String token, int id) async {
     var url = Uri.parse('$baseUrl/transactions');
     url = url.replace(queryParameters: {'id': id.toString()});
@@ -127,6 +155,42 @@ class TransactionService {
       return true;
     } else {
       throw Exception('Gagal Melakukan Cancel Order!');
+    }
+  }
+
+  Future<List<TransactionModel>> getHistoryOrder(String token) async {
+    var url = Uri.parse('$baseUrl/transactions-history');
+    url = url.replace(queryParameters: {
+      'status_cancel': 'CANCELLED',
+      'status_sucess': 'SUCCESS'
+    });
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': token,
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+
+      List<TransactionModel> histories = [];
+
+      for (var item in data['cancel']) {
+        var history = TransactionModel.fromJson(item);
+        histories.add(history);
+      }
+
+      for (var item in data['success']) {
+        var history = TransactionModel.fromJson(item);
+        histories.add(history);
+      }
+
+      return histories;
+    } else {
+      throw Exception('Gagal Get Transactions!');
     }
   }
 }

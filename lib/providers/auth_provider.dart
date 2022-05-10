@@ -93,4 +93,54 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
   }
+
+  // Future<bool> forgotPassword({
+  //   String email,
+  // }) async {
+  //   try {
+  //     await AuthService().forgotPassword(
+  //       email: email,
+  //     );
+
+  //     return true;
+  //   } catch (e) {
+  //     print(e);
+  //     return false;
+  //   }
+  // }
+
+  // Future<bool> resetPassword({
+  //   String email,
+  //   String password,
+  //   String token,
+  // }) async {
+  //   try {
+  //     await AuthService().resetPassword(
+  //       email: email,
+  //       password: password,
+  //       token: token,
+  //     );
+
+  //     return true;
+  //   } catch (e) {
+  //     print(e);
+  //     return false;
+  //   }
+  // }
+
+  Future<UserModel> getUser({
+    String token,
+  }) async {
+    try {
+      UserModel user = await AuthService().getUser(
+        token: token,
+      );
+
+      _user = user;
+      return user;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

@@ -12,6 +12,7 @@ class ListPorductPage extends StatefulWidget {
 }
 
 class _ListPorductPageState extends State<ListPorductPage> {
+  TextEditingController searchController = TextEditingController();
   void initState() {
     // TODO: implement initState
     getProduct();
@@ -26,6 +27,22 @@ class _ListPorductPageState extends State<ListPorductPage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
+    searchProduct(value) {
+      if (value.isEmpty) {
+        setState(() {});
+      } else {
+        setState(() {
+          productProvider.getSearch(value.toLowerCase());
+        });
+      }
+    }
+
+    clearProduct() {
+      setState(() {
+        searchController.clear();
+      });
+    }
 
     Widget header() {
       return AppBar(
@@ -42,12 +59,37 @@ class _ListPorductPageState extends State<ListPorductPage> {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          'List Product',
-          style: TextStyle(
-            color: blackColor,
-            fontSize: 18,
-            fontWeight: bold,
+        title: Container(
+          width: double.infinity,
+          height: 44,
+          decoration: BoxDecoration(
+              color: lightGrayColor, borderRadius: BorderRadius.circular(12)),
+          child: Center(
+            child: TextField(
+              onChanged: (value) {
+                searchProduct(value);
+              },
+              controller: searchController,
+              showCursor: true,
+              readOnly: false,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: greyColor,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.clear,
+                    color: searchController.text.isEmpty
+                        ? lightGrayColor
+                        : greyColor,
+                  ),
+                  onPressed: clearProduct,
+                ),
+                hintText: 'Cari...',
+                border: InputBorder.none,
+              ),
+            ),
           ),
         ),
         actions: <Widget>[
@@ -75,13 +117,21 @@ class _ListPorductPageState extends State<ListPorductPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                child: ListView(
-                  children: productProvider.products
-                      .map(
-                        (product) => ProductListCard(product),
+                child: searchController.text.isEmpty
+                    ? ListView(
+                        children: productProvider.products
+                            .map(
+                              (product) => ProductListCard(product),
+                            )
+                            .toList(),
                       )
-                      .toList(),
-                ),
+                    : ListView(
+                        children: productProvider.productSearch
+                            .map(
+                              (product) => ProductListCard(product),
+                            )
+                            .toList(),
+                      ),
               ),
             ],
           ),

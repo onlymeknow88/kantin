@@ -1,50 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kantin/models/transaction_model.dart';
-import 'package:kantin/pages/order_detail.dart';
+import 'package:kantin/pages/admin/detail_new_order.dart';
 import 'package:kantin/providers/auth_provider.dart';
 import 'package:kantin/providers/transaction_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class OrdersCard extends StatefulWidget {
+class NewOrderCard extends StatefulWidget {
   final TransactionModel transaction;
-  OrdersCard(this.transaction);
+  NewOrderCard(this.transaction);
 
   @override
-  State<OrdersCard> createState() => _OrdersCardState();
+  State<NewOrderCard> createState() => _NewOrderCardState();
 }
 
-class _OrdersCardState extends State<OrdersCard> {
+class _NewOrderCardState extends State<NewOrderCard> {
+  TransactionProvider transactionProvider = TransactionProvider();
+
+
+  Future showDetail() {
+    return showGeneralDialog(
+        context: context,
+        barrierColor: whiteColor.withOpacity(0.1),
+        barrierDismissible: false,
+        transitionDuration: Duration(milliseconds: 300),
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return SafeArea(child: NewOrderDetail(widget.transaction));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime date = widget.transaction.createdAt;
     String dateString =
         DateFormat('EEEE, d MMM yyyy HH:mm:ss', 'id_ID').format(date);
 
-    Future showDetail() {
-      return showGeneralDialog(
-          context: context,
-          barrierColor: whiteColor.withOpacity(0.1),
-          barrierDismissible: false,
-          transitionDuration: Duration(milliseconds: 300),
-          transitionBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          },
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return SafeArea(child: OrderDetailPage(widget.transaction));
-          });
-    }
-
     return GestureDetector(
-      onTap: showDetail,
+      onTap: () {
+        setState(() {});
+        showDetail();
+      },
       child: Container(
         margin: EdgeInsets.only(
           top: defaultMargin,

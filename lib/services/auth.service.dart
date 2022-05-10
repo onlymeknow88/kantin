@@ -126,10 +126,39 @@ class AuthService {
       var data = jsonDecode(response.body)['data'];
       UserModel user = UserModel.fromJson(data['user']);
       user.token = 'Bearer ' + data['access_token'];
+      user.roles = data['roles'];
 
       return user;
     } else {
       throw Exception('Gagal Login');
+    }
+  }
+
+  Future<UserModel> getUser({
+    String token,
+  }) async {
+    var url = Uri.parse('$baseUrl/user');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': token,
+    };
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+
+      print(data);
+      UserModel user = UserModel.fromJson(data['user']);
+      user.roles = data['roles'];
+
+      return user;
+    } else {
+      throw Exception('Get User');
     }
   }
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kantin/models/user_model.dart';
 import 'package:kantin/pages/admin/add_product.dart';
 import 'package:kantin/pages/admin/list_product.dart';
+import 'package:kantin/pages/admin/new_order.dart';
 import 'package:kantin/pages/edit_profile.dart';
+import 'package:kantin/pages/history_order.dart';
 // import 'package:kantin/pages/home/home_page.dart';
 import 'package:kantin/pages/home/order_list_page.dart';
 import 'package:kantin/pages/sign_in_page.dart';
@@ -11,6 +13,7 @@ import 'package:kantin/providers/product_provider.dart';
 import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AkunPage extends StatefulWidget {
   @override
@@ -33,6 +36,14 @@ class _AkunPageState extends State<AkunPage> {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     UserModel user = authProvider.user;
+
+    bool makeVisible = false;
+
+    if (user.roles == 'ADMIN') {
+      makeVisible = true;
+    } else if (user.roles == 'USER') {
+      makeVisible = false;
+    }
 
     handleLogout() async {
       if (await authProvider.logout(
@@ -155,16 +166,55 @@ class _AkunPageState extends State<AkunPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  // Navigator.pushNamed(context, '/edit-profile');
-
-                  productProvider.getProducts();
                   Navigator.of(context)
-                      .push(CustomPageRoute(child: ListPorductPage()));
+                      .push(CustomPageRoute(child: HistoryOrderPage()));
                 },
                 child: menuItem(
-                  'Add Product',
+                  'History Order',
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              makeVisible
+                  ? Text(
+                      'Admin Toko',
+                      style: blackTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: semiBold,
+                      ),
+                    )
+                  : SizedBox(
+                      height: defaultMargin,
+                    ),
+              user.roles == 'ADMIN'
+                  ? GestureDetector(
+                      onTap: () {
+                        productProvider.getProducts();
+                        Navigator.of(context)
+                            .push(CustomPageRoute(child: ListPorductPage()));
+                      },
+                      child: menuItem(
+                        'Add Product',
+                      ),
+                    )
+                  : SizedBox(
+                      height: defaultMargin,
+                    ),
+              makeVisible
+                  ? GestureDetector(
+                      onTap: () {
+                        productProvider.getProducts();
+                        Navigator.of(context)
+                            .push(CustomPageRoute(child: NewOrderPage()));
+                      },
+                      child: menuItem(
+                        'New Order',
+                      ),
+                    )
+                  : SizedBox(
+                      height: defaultMargin,
+                    ),
             ],
           ),
         ),

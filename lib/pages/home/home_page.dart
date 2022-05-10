@@ -165,22 +165,14 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        setState(() {
-          productProvider.getProducts();
-          categoryProvider.getCategory();
-        });
-      },
-      child: ListView(
-        children: [
-          searchInput(),
-          diskonCard(),
-          Categories(),
-          recomendedTitle(),
-          recomendedProduk(),
-        ],
-      ),
+    return ListView(
+      children: [
+        searchInput(),
+        diskonCard(),
+        Categories(),
+        recomendedTitle(),
+        recomendedProduk(),
+      ],
     );
   }
 }

@@ -10,7 +10,7 @@ import 'package:kantin/theme.dart';
 import 'package:kantin/widgets/cart_detail.dart';
 import 'package:kantin/widgets/currency_format.dart';
 import 'package:kantin/widgets/custom_page_route.dart';
-import 'package:kantin/widgets/detail_user_order_card.dart';
+import 'package:kantin/widgets/list_item_card.dart';
 import 'package:kantin/widgets/nota_card.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
@@ -474,28 +474,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Nama Pemesan',
-                      style: subtitleTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: medium,
-                      ),
-                    ),
-                    Text(
-                      authProvider.user.name,
-                      style: blackTextStyle.copyWith(
-                        fontSize: 14,
-                        fontWeight: bold,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
                       'Tanggal',
                       style: subtitleTextStyle.copyWith(
                         fontSize: 14,
@@ -538,40 +516,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               SizedBox(
                 height: 16,
               ),
-              GestureDetector(
-                onTap: showModalItem,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: Text(
-                            '${widget.transaction.items.length} item${widget.transaction.items.length > 1 ? 's' : ''}',
-                            // '1 item',
-                            style: primaryTextStyle.copyWith(
-                              fontSize: 14,
-                              fontWeight: bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          CurrencyFormat.convertToIdr(
-                              widget.transaction.subTotalItem, 0),
-                          // 'Rp16.000',
-                          style: primaryTextStyle.copyWith(
-                            fontSize: 14,
-                            fontWeight: bold,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: widget.transaction.items.length,
+                itemBuilder: (context, index) {
+                  return ListOrderCard(
+                    widget.transaction.items[index],
+                  );
+                },
               ),
             ],
           ),
@@ -603,7 +556,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     Text(
                       widget.transaction.payment,
-                      // 'Cash',
                       style: blackTextStyle.copyWith(
                         fontSize: 14,
                         fontWeight: bold,
