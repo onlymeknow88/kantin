@@ -16,10 +16,6 @@ class _AddProdukPageState extends State<AddProdukPage> {
 
   TextEditingController priceController = TextEditingController();
 
-  TextEditingController tagsController = TextEditingController();
-
-  TextEditingController urlController = TextEditingController();
-
   File _image;
 
   String selectedCategory;
@@ -64,6 +60,11 @@ class _AddProdukPageState extends State<AddProdukPage> {
         selectedCategory,
         _image.path,
       )) {
+        nameController.clear();
+        priceController.clear();
+        selectedCategory = null;
+        selectedTags = null;
+        _image = null;
         print('berhasil add produk');
       }
     }

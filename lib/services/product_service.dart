@@ -33,36 +33,6 @@ class ProductService {
     }
   }
 
-  Future<bool> EditProducts(
-    int id,
-    String name,
-    String price,
-    String tags,
-    String categoryId,
-    String image,
-  ) async {
-    var uri = Uri.parse('$baseUrl/add-products');
-
-    uri = uri.replace(queryParameters: {'id': id.toString()});
-
-    var request = http.MultipartRequest('POST', uri);
-
-    request.files.add(await http.MultipartFile.fromPath('image', image));
-    request.fields['name'] = name;
-    request.fields['price'] = price;
-    request.fields['tags'] = tags;
-    request.fields['categories_id'] = categoryId;
-    var response = await request.send();
-    final respStr = await response.stream.bytesToString();
-    final responseData = json.decode(respStr);
-
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   Future<List<ProductModel>> getProducts() async {
     var url = Uri.parse('$baseUrl/products');
     var headers = {'Content-Type': 'application/json'};
@@ -70,7 +40,7 @@ class ProductService {
     var response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-      List data = jsonDecode(response.body)['data']['data'];
+      List data = jsonDecode(response.body)['data'];
       List<ProductModel> products = [];
 
       for (var item in data) {
