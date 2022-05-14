@@ -62,17 +62,6 @@ class _HistoryOrderPageState extends State<HistoryOrderPage> {
         iconTheme: IconThemeData(
           color: blackColor,
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.date_range,
-              color: blackColor,
-              size: 24,
-            ),
-            onPressed: () => {
-            },
-          ),
-        ],
       );
     }
 
