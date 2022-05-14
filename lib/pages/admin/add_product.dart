@@ -24,6 +24,8 @@ class _AddProdukPageState extends State<AddProdukPage> {
 
   String selectedCategory;
 
+  String selectedTags;
+
   final ImagePicker _picker = ImagePicker();
 
   getImage(ImageSource source) async {
@@ -41,6 +43,14 @@ class _AddProdukPageState extends State<AddProdukPage> {
     });
   }
 
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("Recommended"), value: "Recommended"),
+      DropdownMenuItem(child: Text("Popular"), value: "Popular"),
+    ];
+    return menuItems;
+  }
+
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
@@ -50,7 +60,7 @@ class _AddProdukPageState extends State<AddProdukPage> {
       if (await productProvider.addProducts(
         nameController.text,
         priceController.text,
-        tagsController.text,
+        selectedTags,
         selectedCategory,
         _image.path,
       )) {
@@ -226,25 +236,42 @@ class _AddProdukPageState extends State<AddProdukPage> {
               ),
             ),
             SizedBox(height: 10),
-            TextField(
-              controller: tagsController,
-              decoration: InputDecoration(
-                hintText: 'Tags',
-                hintStyle: subtitleTextStyle.copyWith(
-                  color: greyColor,
+            DropdownButton(
+                isExpanded: true,
+                underline: Container(
+                  color: lightGrayColor,
+                  height: 2,
                 ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: lightGrayColor,
-                  ),
+                hint: Text(
+                  'Pilih Tags',
+                  style: subtitleTextStyle.copyWith(),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: lightBlueColor,
-                  ),
-                ),
-              ),
-            ),
+                value: selectedTags,
+                onChanged: (String newValue) {
+                  setState(() {
+                    selectedTags = newValue;
+                  });
+                },
+                items: dropdownItems),
+            // TextField(
+            //   controller: tagsController,
+            //   decoration: InputDecoration(
+            //     hintText: 'Tags',
+            //     hintStyle: subtitleTextStyle.copyWith(
+            //       color: greyColor,
+            //     ),
+            //     enabledBorder: UnderlineInputBorder(
+            //       borderSide: BorderSide(
+            //         color: lightGrayColor,
+            //       ),
+            //     ),
+            //     focusedBorder: UnderlineInputBorder(
+            //       borderSide: BorderSide(
+            //         color: lightBlueColor,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       );

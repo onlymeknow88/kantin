@@ -3,6 +3,7 @@ import 'package:kantin/models/user_model.dart';
 import 'package:kantin/pages/admin/add_product.dart';
 import 'package:kantin/pages/admin/list_product.dart';
 import 'package:kantin/pages/admin/new_order.dart';
+import 'package:kantin/pages/admin/report_order.dart';
 import 'package:kantin/pages/edit_profile.dart';
 import 'package:kantin/pages/history_order.dart';
 // import 'package:kantin/pages/home/home_page.dart';
@@ -209,6 +210,19 @@ class _AkunPageState extends State<AkunPage> {
                   },
                   child: menuItem(
                     'New Order',
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: makeVisible,
+                child: GestureDetector(
+                  onTap: () {
+                    productProvider.getProducts();
+                    Navigator.of(context)
+                        .push(CustomPageRoute(child: ReportOrderPage()));
+                  },
+                  child: menuItem(
+                    'Report Order',
                   ),
                 ),
               ),

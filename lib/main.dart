@@ -27,6 +27,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({Key key}) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -62,8 +63,6 @@ class MyApp extends StatelessWidget {
           '/edit-profile': (context) => EdtiProfilePage(),
           '/cart': (context) => CartPage(),
           '/order': (context) => OrderListPage(),
-          // '/edit_product': (context) => EditProdukPage(),
-          // '/order-list': (context) => OrderDetailPage(),
           '/search': (context) => SearchPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),

@@ -139,4 +139,23 @@ class TransactionProvider with ChangeNotifier {
       print(e);
     }
   }
+
+  List<TransactionModel> _reporthistoryorder = [];
+
+  List<TransactionModel> get reporthistoryorder => _reporthistoryorder;
+
+  set reporthistoryorder(List<TransactionModel> reporthistoryorder) {
+    _reporthistoryorder = reporthistoryorder;
+    notifyListeners();
+  }
+
+  Future<bool> getReportOrderByDate(String token, String date) async {
+    try {
+      List<TransactionModel> reporthistoryorder =
+          await TransactionService().getReportOrderByDate(token, date);
+      _reporthistoryorder = reporthistoryorder;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

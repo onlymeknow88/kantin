@@ -52,6 +52,7 @@ class _HistoryOrderPageState extends State<HistoryOrderPage> {
         ),
         title: Text(
           'History Order',
+          // "${selectedDate.toLocal()}".split(' ')[0],
           style: TextStyle(
             color: blackColor,
             fontSize: 18,
@@ -61,6 +62,17 @@ class _HistoryOrderPageState extends State<HistoryOrderPage> {
         iconTheme: IconThemeData(
           color: blackColor,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.date_range,
+              color: blackColor,
+              size: 24,
+            ),
+            onPressed: () => {
+            },
+          ),
+        ],
       );
     }
 
@@ -87,16 +99,7 @@ class _HistoryOrderPageState extends State<HistoryOrderPage> {
                       transactionProvider.histories[index].totalPrice, 0),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => OrderListPage(
-                  //       transaction: transactionProvider.histories[index],
-                  //     ),
-                  //   ),
-                  // );
-                },
+                onTap: () {},
               );
             },
           ),

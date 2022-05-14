@@ -252,4 +252,32 @@ class TransactionService {
       throw Exception('Gagal Get Transactions!');
     }
   }
+
+  Future<List<TransactionModel>> getReportOrderByDate(
+      String token, String date) async {
+    var url = Uri.parse('$baseUrl/report-order');
+    url = url.replace(queryParameters: {'date': date});
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': token,
+    };
+
+    var response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+
+      List<TransactionModel> reporthistoryorder = [];
+
+      for (var item in data) {
+        var report = TransactionModel.fromJson(item);
+        reporthistoryorder.add(report);
+      }
+
+      return reporthistoryorder;
+    } else {
+      throw Exception('Gagal Get Transactions!');
+    }
+  }
 }
