@@ -25,7 +25,7 @@ class CartCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.network(
-                  'http://103.183.75.223/' + cart.product.galleries[0].url,
+                  'http://103.179.57.17/' + cart.product.galleries[0].url,
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  String baseUrl = 'http://103.183.75.223/api';
+  String baseUrl = 'http://103.179.57.17/api';
 
   Future<UserModel> register({
     String name,
@@ -127,7 +127,7 @@ class AuthService {
       var data = jsonDecode(response.body)['data'];
       UserModel user = UserModel.fromJson(data['user']);
       user.token = 'Bearer ' + data['access_token'];
-      
+
       // user.roles = user.roles;
 
       return user;

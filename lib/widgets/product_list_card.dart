@@ -15,7 +15,7 @@ class ProductListCard extends StatefulWidget {
 }
 
 class _ProductListCardState extends State<ProductListCard> {
-  String BaseUrl = 'http://103.183.75.223';
+  String BaseUrl = 'http://103.179.57.17';
   void initState() {
     // TODO: implement initState
     getProduct();

@@ -155,16 +155,16 @@ class _AkunPageState extends State<AkunPage> {
                   fontWeight: semiBold,
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     // Navigator.pushNamed(context, '/edit-profile');
-              //     Navigator.of(context)
-              //         .push(CustomPageRoute(child: EdtiProfilePage()));
-              //   },
-              //   child: menuItem(
-              //     'Edit Profile',
-              //   ),
-              // ),
+              GestureDetector(
+                onTap: () {
+                  // Navigator.pushNamed(context, '/edit-profile');
+                  Navigator.of(context)
+                      .push(CustomPageRoute(child: EdtiProfilePage()));
+                },
+                child: menuItem(
+                  'Edit Profile',
+                ),
+              ),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context)

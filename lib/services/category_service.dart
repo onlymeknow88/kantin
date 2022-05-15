@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:kantin/models/category_model.dart';
 
 class CategoryService {
-  String baseUrl = 'http://103.183.75.223/api';
+  String baseUrl = 'http://103.179.57.17/api';
 
   Future<List<CategoryModel>> getCategories() async {
     var url = Uri.parse('$baseUrl/categories');

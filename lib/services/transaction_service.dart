@@ -5,7 +5,7 @@ import 'package:kantin/models/product_model.dart';
 import 'package:kantin/models/transaction_model.dart';
 
 class TransactionService {
-  String baseUrl = 'http://103.183.75.223/api';
+  String baseUrl = 'http://103.179.57.17/api';
 
   Future<bool> checkout(String token, List<CartModel> carts, double totalPrice,
       double subTotalItem) async {

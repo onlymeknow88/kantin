@@ -11,7 +11,7 @@ class ProdukCard extends StatelessWidget {
   final ProductModel product;
   ProdukCard(this.product);
 
-  String BaseUrl = 'http://103.183.75.223';
+  String BaseUrl = 'http://103.179.57.17';
 
   @override
   Widget build(BuildContext context) {

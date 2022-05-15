@@ -5,6 +5,7 @@ import 'package:kantin/theme.dart';
 import 'package:provider/provider.dart';
 
 class EdtiProfilePage extends StatelessWidget {
+  final BaseUrl = 'http://103.179.57.17';
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);

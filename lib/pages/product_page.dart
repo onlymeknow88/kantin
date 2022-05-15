@@ -51,7 +51,7 @@ class _ProductPageState extends State<ProductPage> {
               top: 16,
             ),
             child: Image.network(
-              'http://103.183.75.223' + widget.product.galleries[0].url,
+              'http://103.179.57.17' + widget.product.galleries[0].url,
               width: MediaQuery.of(context).size.width,
               height: 310,
               fit: BoxFit.cover,
