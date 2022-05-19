@@ -149,20 +149,13 @@ class _ReportOrderPageState extends State<ReportOrderPage> {
       );
     }
 
-    // return Scaffold(
-    //   backgroundColor: whiteColor,
-    //   appBar: PreferredSize(
-    //     preferredSize: Size.fromHeight(50.0),
-    //     child: header(),
-    //   ),
-    //   body: content(),
-    // );
-
-    return ListView(
-      children: [
-        header(),
-        content(),
-      ],
+    return Scaffold(
+      backgroundColor: whiteColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.0),
+        child: header(),
+      ),
+      body: content(),
     );
   }
 }

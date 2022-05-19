@@ -201,6 +201,8 @@ class _AddProdukPageState extends State<AddProdukPage> {
             ),
             SizedBox(height: 10),
             TextField(
+              maxLines: null,
+              minLines: 6,
               decoration: InputDecoration(
                 hintText: 'Deskripsi',
                 hintStyle: subtitleTextStyle.copyWith(
@@ -254,25 +256,6 @@ class _AddProdukPageState extends State<AddProdukPage> {
                   });
                 },
                 items: dropdownItems),
-            // TextField(
-            //   controller: tagsController,
-            //   decoration: InputDecoration(
-            //     hintText: 'Tags',
-            //     hintStyle: subtitleTextStyle.copyWith(
-            //       color: greyColor,
-            //     ),
-            //     enabledBorder: UnderlineInputBorder(
-            //       borderSide: BorderSide(
-            //         color: lightGrayColor,
-            //       ),
-            //     ),
-            //     focusedBorder: UnderlineInputBorder(
-            //       borderSide: BorderSide(
-            //         color: lightBlueColor,
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       );
@@ -444,7 +427,7 @@ class _AddProdukPageState extends State<AddProdukPage> {
                 ),
                 namaProdukInput(),
                 hargaInput(),
-                // deskripsiInput(),
+                deskripsiInput(),
                 tagsInput(),
                 dropdownCategory(),
               ],
